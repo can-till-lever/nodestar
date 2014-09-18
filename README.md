@@ -8,6 +8,6 @@ Dependencies:
 <br>git clone git://github.com/kdeforche/wt.git
 
 Build notes for boost and wt:
-<br>blog.raymond.burkholder.net/index.php?/archives/607-Installing-Wt-on-Ubuntu.html
+<br>http://blog.raymond.burkholder.net/index.php?/archives/607-Installing-Wt-on-Ubuntu.html
 
 
