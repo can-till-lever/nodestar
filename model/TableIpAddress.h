@@ -18,7 +18,7 @@
 #include <Wt/Dbo/WtSqlTraits>
 
 #include "../SqlTraits.h"
-#include "../cidr.hpp"
+#include "../Cidr.hpp"
 
 namespace dbo = Wt::Dbo;
 

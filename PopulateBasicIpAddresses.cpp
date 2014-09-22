@@ -32,6 +32,7 @@ void PopulateBasicIpAddresses( dbo::Session& session ) {
     dbo::ptr<TableOrganization> ptrArin  = session.add( parin );
     
     // owning organizations below may not be correct, may need some additional proofing
+    // also needs the IPv6 equivalents
    
     // http://en.wikipedia.org/wiki/List_of_assigned_/8_IPv4_address_blocks
     // http://en.wikipedia.org/wiki/Reserved_IP_addresses

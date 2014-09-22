@@ -1,7 +1,7 @@
 #include <string.h>
 #include <iostream>
 
-#include "cidr.hpp"
+#include "Cidr.hpp"
 
 cidr::cidr( void ) {
   memset(&m_cidr, 0, sizeof(cidr_addr));

@@ -17,7 +17,7 @@
 
 #include <Wt/Dbo/Dbo>
 
-#include "cidr.hpp"
+#include "Cidr.hpp"
 
 namespace Wt {
 namespace Dbo {

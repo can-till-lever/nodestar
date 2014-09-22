@@ -9,10 +9,7 @@
 #define	POPULATEBASICIPADDRESSES_H
 
 #include <Wt/Dbo/Dbo>
-
 namespace dbo = Wt::Dbo;
-
-class TableOrganization;
 
 void PopulateBasicIpAddresses( dbo::Session& );
 

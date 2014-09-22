@@ -4,12 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Cidr.hpp</itemPath>
       <itemPath>PopulateBasicIpAddresses.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
       <itemPath>model/TableIpAddress.h</itemPath>
       <itemPath>TableOrganization.h</itemPath>
       <itemPath>model/TableOrganization.h</itemPath>
-      <itemPath>cidr.hpp</itemPath>
+      <itemPath>WebApp.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -18,8 +19,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Cidr.cpp</itemPath>
       <itemPath>PopulateBasicIpAddresses.cpp</itemPath>
-      <itemPath>cidr.cpp</itemPath>
+      <itemPath>WebApp.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -52,9 +54,14 @@
             <linkerLibLibItem>wt</linkerLibLibItem>
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
+            <linkerLibLibItem>wthttp</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="PopulateBasicIpAddresses.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
@@ -63,9 +70,9 @@
       </item>
       <item path="TableOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cidr.cpp" ex="false" tool="1" flavor2="0">
+      <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="cidr.hpp" ex="false" tool="3" flavor2="0">
+      <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -94,6 +101,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="PopulateBasicIpAddresses.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
@@ -102,9 +113,9 @@
       </item>
       <item path="TableOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cidr.cpp" ex="false" tool="1" flavor2="0">
+      <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="cidr.hpp" ex="false" tool="3" flavor2="0">
+      <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

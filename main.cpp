@@ -19,6 +19,7 @@
 #include "model/TableIpAddress.h"
 
 #include "PopulateBasicIpAddresses.h"
+#include "WebApp.h"
 
 namespace dbo = Wt::Dbo;
 
@@ -29,13 +30,12 @@ namespace dbo = Wt::Dbo;
  * create database nodestar with owner nodestar;
  */
 
-void run( void ) {
+void InitDatabase( dbo::backend::Postgres& be ) {
   
   try {
-    dbo::backend::Postgres pq( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
-    //pq.setProperty( "show-queries", "true" );
+    
     dbo::Session session;
-    session.setConnection( pq );
+    session.setConnection( be );
 
     session.mapClass<TableOrganization>( "organization" );
     session.mapClass<TableIpAddress>( "ipaddress" );
@@ -66,10 +66,24 @@ void run( void ) {
   
 }
 
+dbo::backend::Postgres* pq;
+
+Wt::WApplication* CreateApplication( const Wt::WEnvironment& env ) {
+  if ( 0 == pq ) {
+    throw std::runtime_error( "no connection" );
+  }
+  return new WebApp( env, *pq );
+}
+
+// http://www.webtoolkit.eu/wt/doc/reference/html/InstallationUnix.html
+
 int main(int argc, char** argv) {
-  std::cout << "hello" << std::endl;
-  run();
-  std::cout << "bye" << std::endl;
-  return 0;
+  
+  std::string sConnection( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
+  pq = new dbo::backend::Postgres( sConnection );
+  //pq->setProperty( "show-queries", "true" );
+  
+  InitDatabase( *pq );
+  return Wt::WRun( argc, argv, &CreateApplication );
 }
 
