@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/PopulateBasicIpAddresses.o \
 	${OBJECTDIR}/cidr.o \
 	${OBJECTDIR}/main.o
 
@@ -53,7 +54,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/local/lib -lwtdbo -lwtdbopostgres -lcidr
+LDLIBSOPTIONS=-L/usr/local/lib -lcidr -lwt -lwtdbo -lwtdbopostgres
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -62,6 +63,11 @@ LDLIBSOPTIONS=-L/usr/local/lib -lwtdbo -lwtdbopostgres -lcidr
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/PopulateBasicIpAddresses.o: PopulateBasicIpAddresses.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/PopulateBasicIpAddresses.o PopulateBasicIpAddresses.cpp
 
 ${OBJECTDIR}/cidr.o: cidr.cpp 
 	${MKDIR} -p ${OBJECTDIR}

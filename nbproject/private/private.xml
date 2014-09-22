@@ -4,4 +4,17 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/sysadmin/projects/nodestar/model/TableIpAddress.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/cidr.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/PopulateBasicIpAddresses.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/SqlTraits.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/model/TableOrganization.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/cidr.hpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/main.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/PopulateBasicIpAddresses.h</file>
+        </group>
+    </open-files>
 </project-private>

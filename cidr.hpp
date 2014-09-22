@@ -43,9 +43,9 @@ public:
   ~cidr( void );
   
   void broadcast( cidr& c ) const { wrap1( &cidr_addr_broadcast, c ); };  
-  void hostmax( cidr& c ) const { wrap1( &cidr_addr_hostmax, c ); };
-  void hostmin( cidr& c ) const { wrap1( &cidr_addr_hostmin, c ); };
-  void network( cidr& c ) const { wrap1( &cidr_addr_network, c ); };
+  void   hostmax( cidr& c ) const { wrap1( &cidr_addr_hostmax, c ); };
+  void   hostmin( cidr& c ) const { wrap1( &cidr_addr_hostmin, c ); };
+  void   network( cidr& c ) const { wrap1( &cidr_addr_network, c ); };
   
   void divide( cidr&, cidr& ) const;
   void supernet( cidr& ) const;
@@ -67,12 +67,12 @@ public:
   bool v4mapped( void ) const { return 0 == cidr_is_v4mapped( &m_cidr ); }
   
   int contains( const cidr& c ) const { return cidr_contains( &m_cidr, &c.m_cidr ); } // Returns 0 if little is wholly contained within big. Returns -1 if it's not, or if an error occured.
-  int equals( const cidr& c ) const { return cidr_equals( &m_cidr, &c.m_cidr ); } // Returns 0 if the two CIDR structs describe the same netblock. Returns -1 otherwise.
+  int   equals( const cidr& c ) const { return   cidr_equals( &m_cidr, &c.m_cidr ); } // Returns 0 if the two CIDR structs describe the same netblock. Returns -1 otherwise.
   
   bool operator==( const cidr& rhs ) const { return 0 == equals( rhs ); }
   bool operator!=( const cidr& rhs ) const { return 0 != equals( rhs ); }
   
-  void inaddr( in_addr& in ) const { cidr_to_inaddr( &m_cidr, &in ); }
+  void  inaddr(  in_addr& in ) const {  cidr_to_inaddr( &m_cidr, &in ); }
   void in6addr( in6_addr& in ) const { cidr_to_in6addr( &m_cidr, &in ); }
   
   const std::string str( int flags = CIDR_NOFLAGS ) const;
