@@ -31,12 +31,20 @@ class TableOrganization {
 public:
   
   TableOrganization( void ): nAsn( 0 ) {};
+  TableOrganization( 
+          const std::string& sIdOrganization_, 
+          const std::string& sName_,
+          const std::string& sDescription_,
+          const std::string& sUrl_,
+          int nAsn_ = 0
+          ) : sIdOrganization( sIdOrganization_ ), sName( sName_ ), sDescription( sDescription_ ), sUrl( sUrl_), nAsn( nAsn_ )
+  {}
 
   std::string sIdOrganization;
   std::string sName;
   std::string sDescription;
-  int nAsn;
   std::string sUrl;
+  int nAsn;
   
   typedef dbo::collection<dbo::ptr<TableIpAddress> > collectionIpAddresses_t;
   collectionIpAddresses_t collectionIpAddresses;
@@ -46,8 +54,8 @@ public:
     dbo::id( a, sIdOrganization, "idorganization" );
     dbo::field( a, sName, "name" );
     dbo::field( a, sDescription, "description" );
-    dbo::field( a, nAsn, "asn" );
     dbo::field( a, sUrl, "url" );
+    dbo::field( a, nAsn, "asn" );
     dbo::hasMany( a, collectionIpAddresses, dbo::ManyToOne, "idorganization" );
   }
   

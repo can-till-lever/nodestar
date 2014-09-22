@@ -8,16 +8,16 @@
 #ifndef TABLEIPADDRESS_H
 #define	TABLEIPADDRESS_H
 
-#include <boost/uuid/uuid.hpp>
-//#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/random_generator.hpp>
 // http://www.boost.org/doc/libs/1_56_0/libs/uuid/uuid.html
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
 
 #include <Wt/Dbo/Dbo>
 #include <Wt/WDateTime>
 
 #include <Wt/Dbo/WtSqlTraits>
 
+#include "../SqlTraits.h"
 #include "../cidr.hpp"
 
 namespace dbo = Wt::Dbo;
@@ -40,10 +40,34 @@ namespace Wt {
 class TableIpAddress {
 public:
   
-  TableIpAddress( void ) {
-    boost::uuids::random_generator gen;
-    uuidId = gen();
-    dtCreation = Wt::WDateTime::currentDateTime();
+  TableIpAddress( void ) { Init(); }
+  TableIpAddress( 
+          dbo::ptr<TableOrganization> ptrOrganization_, 
+          const std::string& sIpAddress_, 
+          const std::string& sName_,
+          const std::string& sDescription_,
+          const std::string& sFqdn_,
+          const std::string& sUrl_,
+          const std::string& sSource_
+          ) : ptrOrganization( ptrOrganization_ ), cidrIpAddress( sIpAddress_ ), sName( sName_ ), sDescription( sDescription_ ), 
+          sFqdn( sFqdn_ ), sUrl( sUrl_ ), sSource( sSource_ )
+  {
+    Init();
+  }
+  TableIpAddress( 
+          dbo::ptr<TableOrganization> ptrOrganization_, 
+          dbo::ptr<TableIpAddress> ptrParent_,
+          const std::string& sIpAddress_, 
+          const std::string& sName_,
+          const std::string& sDescription_,
+          const std::string& sFqdn_,
+          const std::string& sUrl_,
+          const std::string& sSource_
+          ) : ptrOrganization( ptrOrganization_ ), ptrParent( ptrParent_ ),
+          cidrIpAddress( sIpAddress_ ), sName( sName_ ), sDescription( sDescription_ ), 
+          sFqdn( sFqdn_ ), sUrl( sUrl_ ), sSource( sSource_ )
+  {
+    Init();
   }
   
   boost::uuids::uuid uuidId;
@@ -78,6 +102,11 @@ public:
   
 protected:
 private:
+  void Init( void ) {
+    boost::uuids::random_generator gen;
+    uuidId = gen();
+    dtCreation = Wt::WDateTime::currentDateTime();
+  }
 };
 
 
