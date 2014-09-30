@@ -19,6 +19,6 @@ Defined the initial schema for two PostgreSQL tables:  organization, ipaddress. 
 special datatypes uuid and cidr, so is not portable to other SQL implementations.  Wt's ORM library 
 used for defining and building the schema.
 
-Prepopulating ipaddress tables with some common reservations.
+Pre-populating ipaddress tables with some common reservations.
 
 Added the Wt wrapper so can now start creating some user interface stuff.

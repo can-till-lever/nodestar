@@ -66,20 +66,20 @@ namespace Wt {
 namespace Dbo {
 
 template<>
-struct sql_value_traits<cidr, void> {
+struct sql_value_traits<Cidr, void> {
   
   static const bool specialized = true;
 
   static const char *type(SqlConnection *conn, int size);
-  static void bind(const cidr& v, SqlStatement *statement, int column, int size);
-  static bool read(cidr& v, SqlStatement *statement, int column, int size);
+  static void bind(const Cidr& v, SqlStatement *statement, int column, int size);
+  static bool read(Cidr& v, SqlStatement *statement, int column, int size);
 };
 
-inline const char *sql_value_traits<cidr, void>::type(SqlConnection *conn, int size) {
+inline const char *sql_value_traits<Cidr, void>::type(SqlConnection *conn, int size) {
   return "cidr";
 }
 
-inline void sql_value_traits<cidr, void>::bind(const cidr& v, SqlStatement *statement, int column, int size) {
+inline void sql_value_traits<Cidr, void>::bind(const Cidr& v, SqlStatement *statement, int column, int size) {
   statement->bind( column, v.str() );
 
 //  if (v.isNull())
@@ -88,11 +88,11 @@ inline void sql_value_traits<cidr, void>::bind(const cidr& v, SqlStatement *stat
 //    statement->bind(column, v.toPosixTime(), SqlDateTime);
 }
 
-inline bool sql_value_traits<cidr, void>::read(cidr& v, SqlStatement *statement, int column, int size) {
+inline bool sql_value_traits<Cidr, void>::read(Cidr& v, SqlStatement *statement, int column, int size) {
 
   std::string d;
   if (statement->getResult(column, &d, size)) {
-    cidr c( d );
+    Cidr c( d );
     v = c;
     return true;
   } 

@@ -5,7 +5,8 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Cidr.hpp</itemPath>
-      <itemPath>PopulateBasicIpAddresses.h</itemPath>
+      <itemPath>utility/ImportSmcXml.h</itemPath>
+      <itemPath>utility/PopulateBasicIpAddresses.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
       <itemPath>model/TableIpAddress.h</itemPath>
       <itemPath>TableOrganization.h</itemPath>
@@ -15,12 +16,15 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>README.md</itemPath>
+      <itemPath>notes.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Cidr.cpp</itemPath>
-      <itemPath>PopulateBasicIpAddresses.cpp</itemPath>
+      <itemPath>utility/ImportSmcXml.cpp</itemPath>
+      <itemPath>utility/PopulateBasicIpAddresses.cpp</itemPath>
       <itemPath>WebApp.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -62,9 +66,7 @@
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PopulateBasicIpAddresses.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
+      <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -79,6 +81,19 @@
       <item path="model/TableIpAddress.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="model/TableOrganization.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="notes.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utility/ImportSmcXml.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="utility/ImportSmcXml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utility/PopulateBasicIpAddresses.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="utility/PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -105,9 +120,7 @@
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PopulateBasicIpAddresses.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
+      <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -122,6 +135,19 @@
       <item path="model/TableIpAddress.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="model/TableOrganization.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="notes.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utility/ImportSmcXml.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="utility/ImportSmcXml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utility/PopulateBasicIpAddresses.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="utility/PopulateBasicIpAddresses.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

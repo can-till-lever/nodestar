@@ -72,7 +72,7 @@ public:
   
   boost::uuids::uuid uuidId;
   dbo::ptr<TableIpAddress> ptrParent;
-  cidr cidrIpAddress;
+  Cidr cidrIpAddress;
   dbo::ptr<TableOrganization> ptrOrganization;
   std::string sName;
   std::string sDescription;

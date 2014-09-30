@@ -3,6 +3,11 @@
  * Author: sysadmin
  *
  * Created on September 22, 2014, 4:38 PM
+ * 
+ * need authentication module
+ * access functions in cidr library to show ranges and such
+ * parse zone files
+ * parse stonegate xml file (wt has xml parser library?)
  */
 
 #ifndef WEBAPP_H

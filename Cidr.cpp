@@ -3,11 +3,11 @@
 
 #include "Cidr.hpp"
 
-cidr::cidr( void ) {
+Cidr::Cidr( void ) {
   memset(&m_cidr, 0, sizeof(cidr_addr));
 }
 
-cidr::cidr( const struct in_addr& in ) {
+Cidr::Cidr( const struct in_addr& in ) {
   cidr_addr* p = cidr_from_inaddr( &in );
   if ( 0 == p ) {
     throw error( errno );
@@ -18,7 +18,7 @@ cidr::cidr( const struct in_addr& in ) {
   }
 }
 
-cidr::cidr( const struct in6_addr& in ) {
+Cidr::Cidr( const struct in6_addr& in ) {
   cidr_addr* p = cidr_from_in6addr( &in );
   if ( 0 == p ) {
     throw error( errno );
@@ -29,7 +29,7 @@ cidr::cidr( const struct in6_addr& in ) {
   }
 }
 
-cidr::cidr( const std::string& s ) {
+Cidr::Cidr( const std::string& s ) {
   cidr_addr* p = cidr_from_str( s.c_str() );
   if ( 0 == p ) {
     throw error( errno );
@@ -40,13 +40,13 @@ cidr::cidr( const std::string& s ) {
   }
 }
 
-cidr::cidr( const cidr& rhs ): m_cidr( rhs.m_cidr ) {};
+Cidr::Cidr( const Cidr& rhs ): m_cidr( rhs.m_cidr ) {};
 
-cidr::~cidr( void ) {
+Cidr::~Cidr( void ) {
   
 }
 
-void cidr::divide( cidr& a, cidr& b ) const {
+void Cidr::divide( Cidr& a, Cidr& b ) const {
   cidr_addr** p = cidr_net_subnets( &m_cidr );
   if ( 0 == p ) {
     throw error( errno );
@@ -60,7 +60,7 @@ void cidr::divide( cidr& a, cidr& b ) const {
   }
 }
 
-void cidr::supernet(cidr& c ) const {
+void Cidr::supernet(Cidr& c ) const {
   cidr_addr* p = cidr_net_supernet( &m_cidr );
   if ( 0 == p ) {
     throw error( errno );
@@ -71,7 +71,7 @@ void cidr::supernet(cidr& c ) const {
   }
 }
 
-const std::string cidr::str( int flags ) const {
+const std::string Cidr::str( int flags ) const {
   char* p = cidr_to_str( &m_cidr, flags );
   if ( 0 == p ) {
     throw error( errno );
@@ -84,6 +84,6 @@ const std::string cidr::str( int flags ) const {
   return ""; // shouldn't be reachable
 }
 
-std::ostream& operator<<(std::ostream& o, const cidr& c ) {
+std::ostream& operator<<(std::ostream& o, const Cidr& c ) {
   return o << c.str();
 }

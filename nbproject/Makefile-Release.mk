@@ -36,9 +36,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Cidr.o \
-	${OBJECTDIR}/PopulateBasicIpAddresses.o \
 	${OBJECTDIR}/WebApp.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/utility/ImportSmcXml.o \
+	${OBJECTDIR}/utility/PopulateBasicIpAddresses.o
 
 
 # C Compiler Flags
@@ -70,11 +71,6 @@ ${OBJECTDIR}/Cidr.o: Cidr.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cidr.o Cidr.cpp
 
-${OBJECTDIR}/PopulateBasicIpAddresses.o: PopulateBasicIpAddresses.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/PopulateBasicIpAddresses.o PopulateBasicIpAddresses.cpp
-
 ${OBJECTDIR}/WebApp.o: WebApp.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -84,6 +80,16 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/utility/ImportSmcXml.o: utility/ImportSmcXml.cpp 
+	${MKDIR} -p ${OBJECTDIR}/utility
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportSmcXml.o utility/ImportSmcXml.cpp
+
+${OBJECTDIR}/utility/PopulateBasicIpAddresses.o: utility/PopulateBasicIpAddresses.cpp 
+	${MKDIR} -p ${OBJECTDIR}/utility
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/PopulateBasicIpAddresses.o utility/PopulateBasicIpAddresses.cpp
 
 # Subprojects
 .build-subprojects:

@@ -31,24 +31,24 @@ extern "C" {
 #endif
   
     
-class cidr {
-  friend std::ostream& operator<<(std::ostream& o, const cidr& );
+class Cidr {
+  friend std::ostream& operator<<(std::ostream& o, const Cidr& );
 public:
   
-  cidr( void );
-  explicit cidr( const struct in_addr& );
-  explicit cidr( const struct in6_addr& );
-  explicit cidr( const std::string& );
-  explicit cidr( const cidr& );
-  ~cidr( void );
+  Cidr( void );
+  explicit Cidr( const struct in_addr& );
+  explicit Cidr( const struct in6_addr& );
+  explicit Cidr( const std::string& );
+  explicit Cidr( const Cidr& );
+  ~Cidr( void );
   
-  void broadcast( cidr& c ) const { wrap1( &cidr_addr_broadcast, c ); };  
-  void   hostmax( cidr& c ) const { wrap1( &cidr_addr_hostmax, c ); };
-  void   hostmin( cidr& c ) const { wrap1( &cidr_addr_hostmin, c ); };
-  void   network( cidr& c ) const { wrap1( &cidr_addr_network, c ); };
+  void broadcast( Cidr& c ) const { wrap1( &cidr_addr_broadcast, c ); };  
+  void   hostmax( Cidr& c ) const { wrap1( &cidr_addr_hostmax, c ); };
+  void   hostmin( Cidr& c ) const { wrap1( &cidr_addr_hostmin, c ); };
+  void   network( Cidr& c ) const { wrap1( &cidr_addr_network, c ); };
   
-  void divide( cidr&, cidr& ) const;
-  void supernet( cidr& ) const;
+  void divide( Cidr&, Cidr& ) const;
+  void supernet( Cidr& ) const;
   
   uint8_t* addr( void ) const { return cidr_get_addr( &m_cidr ); } // need to free the result
   uint8_t* mask( void ) const { return cidr_get_mask( &m_cidr ); } // need to free the result
@@ -66,18 +66,18 @@ public:
   
   bool v4mapped( void ) const { return 0 == cidr_is_v4mapped( &m_cidr ); }
   
-  int contains( const cidr& c ) const { return cidr_contains( &m_cidr, &c.m_cidr ); } // Returns 0 if little is wholly contained within big. Returns -1 if it's not, or if an error occured.
-  int   equals( const cidr& c ) const { return   cidr_equals( &m_cidr, &c.m_cidr ); } // Returns 0 if the two CIDR structs describe the same netblock. Returns -1 otherwise.
+  int contains( const Cidr& c ) const { return cidr_contains( &m_cidr, &c.m_cidr ); } // Returns 0 if little is wholly contained within big. Returns -1 if it's not, or if an error occured.
+  int   equals( const Cidr& c ) const { return   cidr_equals( &m_cidr, &c.m_cidr ); } // Returns 0 if the two CIDR structs describe the same netblock. Returns -1 otherwise.
   
-  bool operator==( const cidr& rhs ) const { return 0 == equals( rhs ); }
-  bool operator!=( const cidr& rhs ) const { return 0 != equals( rhs ); }
+  bool operator==( const Cidr& rhs ) const { return 0 == equals( rhs ); }
+  bool operator!=( const Cidr& rhs ) const { return 0 != equals( rhs ); }
   
   void  inaddr(  in_addr& in ) const {  cidr_to_inaddr( &m_cidr, &in ); }
   void in6addr( in6_addr& in ) const { cidr_to_in6addr( &m_cidr, &in ); }
   
   const std::string str( int flags = CIDR_NOFLAGS ) const;
   
-  const cidr& operator=( const cidr& rhs ) {
+  const Cidr& operator=( const Cidr& rhs ) {
     if ( this != &rhs ) {
       m_cidr = rhs.m_cidr;
     }
@@ -93,7 +93,7 @@ protected:
   
   typedef cidr_addr* (*wrap1_t)( const cidr_addr* );
   
-  void wrap1( wrap1_t func, cidr& c ) const {
+  void wrap1( wrap1_t func, Cidr& c ) const {
     cidr_addr* p;
     p = func( &c.m_cidr );
     if ( 0 == p ) {
@@ -111,7 +111,7 @@ private:
   
 };  
 
-std::ostream& operator<<(std::ostream& o, const cidr& );
+std::ostream& operator<<(std::ostream& o, const Cidr& );
 
  
   
