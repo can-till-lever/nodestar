@@ -1,3 +1,8 @@
+/* 
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
+ */
+
 #include <string.h>
 #include <iostream>
 

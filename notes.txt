@@ -6,3 +6,5 @@
 
 * work on the firewall xml file as Russell wants to extract subsections describing customer rule sets.
 * then enable rm#2261 to obtain the info automatically via the api
+
+* create a report of holes in subnets which can be reused.

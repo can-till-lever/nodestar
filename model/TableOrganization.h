@@ -1,6 +1,7 @@
 /* 
  * File:   TableOrganization.h
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on September 18, 2014, 5:23 PM
  */

@@ -1,6 +1,7 @@
 /* 
  * File:   main.cpp
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on September 17, 2014, 1:25 PM
  */
@@ -21,6 +22,7 @@
 #include "model/TableIpAddress.h"
 
 #include "utility/PopulateBasicIpAddresses.h"
+#include "utility/ImportNetworkCsv.h"
 #include "utility/ImportSmcXml.h"
 
 #include "Cidr.hpp"
@@ -40,28 +42,50 @@ typedef dbo::ptr<TableOrganization> ptrOrganization_t;
 typedef dbo::ptr<TableIpAddress> ptrIpAddress_t;
 
 struct InsertNetwork {
-  const std::string sSource;
   dbo::Session& session;
   ptrOrganization_t ptrOrganization;
+  ptrIpAddress_t ptrIpAddress;
   struct Network {
+    std::string sIdOrganization;
     Cidr cidr;
     std::string sName;
     std::string sDescription;
-    Network( const std::string& sNetwork, const std::string& sName_, const std::string& sDescription_ )
-            : cidr( sNetwork ), sName( sName_ ), sDescription( sDescription_ ) {}
+    std::string sSource;
+    Network( const std::string& sNetwork, const std::string& sName_, const std::string& sDescription_, const std::string& sSource_ )
+            : cidr( sNetwork ), sName( sName_ ), sDescription( sDescription_ ), sSource( sSource_ ) {}
+    Network( const std::string& sIdOrganization_, const std::string& sNetwork, const std::string& sName_, const std::string& sDescription_, const  std::string& sSource_ )
+            : sIdOrganization( sIdOrganization_ ), cidr( sNetwork ), sName( sName_ ), sDescription( sDescription_ ), sSource( sSource_ ) {}
   };
   typedef std::vector<Network> vNetwork_t;
   typedef std::map<int,vNetwork_t> mapNetworks_t; // a vector per mask length
   typedef mapNetworks_t::iterator mapNetworks_iter;
   mapNetworks_t mapNetworks;
-  InsertNetwork( dbo::Session& session_, ptrOrganization_t ptrOrganization_, const std::string& sSource_ )
-    : session( session_ ), ptrOrganization( ptrOrganization_ ), sSource( sSource_ ) {};
+  InsertNetwork( dbo::Session& session_, ptrOrganization_t ptrOrganization_ )
+    : session( session_ ), ptrOrganization( ptrOrganization_ ) {};
   ~InsertNetwork( void ) {
     }
     
-  void operator()( const std::string& sNetwork, const std::string& sName, const std::string& sComment ) {
+  void operator()( const std::string& sNetwork, const std::string& sName, const std::string& sComment, const  std::string& sSource ) {
     // collect addresses, sort masks shortest to longest, then insert as hierarchy into database
-    Network network( sNetwork, sName, sComment );
+    Network network( sNetwork, sName, sComment, sSource );
+    int len = network.cidr.pflen();
+    mapNetworks_iter iter = mapNetworks.find( len );
+    if ( mapNetworks.end() == iter ) {
+      std::cout << "adding vector of length " << len << " for " << sNetwork << std::endl;
+      vNetwork_t vNetwork;
+      mapNetworks[ len ] = vNetwork;
+      iter = mapNetworks.find( len );
+    }
+    iter->second.push_back(network);
+  }
+  void operator()( const std::string& sIdOrganization, const std::string& sNetwork, const std::string& sName, const std::string& sComment, const std::string& sSource ) {
+    // collect addresses, sort masks shortest to longest, then insert as hierarchy into database
+    //Network network( sIdOrganization, sNetwork, sName, sComment );  // need an org insertion capability to do this
+    // Name is defaulted to 'unknown' on entry
+    Network network( sNetwork, sName, sComment, sSource );
+    if ( "" != sIdOrganization ) {
+      network.sName = sIdOrganization;
+    }
     int len = network.cidr.pflen();
     mapNetworks_iter iter = mapNetworks.find( len );
     if ( mapNetworks.end() == iter ) {
@@ -77,13 +101,42 @@ struct InsertNetwork {
       vNetwork_t& vNetwork( miter->second );
       for ( vNetwork_t::const_iterator viter = vNetwork.begin(); vNetwork.end() != viter; ++viter ) {
         const Network& network( *viter );
-        std::cout << "adding " << network.cidr.str() << std::endl;
+        //std::cout << "adding " << network.cidr.str() << std::endl;
         try {
           dbo::Transaction transaction( session );
-          //ptrIpAddress_t ptrIpAddress;
+          int count = session.query<int>( "select count(1) from ipaddress" ).where("ipaddress = ?").bind( network.cidr.str() );
+          if ( 0 != count ) {
+            std::cout << "** " << network.cidr << " already exists" << std::endl;
+          }
+          else {
+            typedef dbo::collection<ptrIpAddress_t> ptrIpAddresses_t;
+            try {
+              ptrIpAddress_t ptrIpAddress;
+              int maxlen( 0 );
+              ptrIpAddresses_t ptrIpAddresses = session.find<TableIpAddress>().where("ipaddress>>?").bind( network.cidr.str() );
+              for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
+                int masklen = (*iter)->cidrIpAddress.pflen();
+                if ( maxlen < masklen ) {
+                  ptrIpAddress = *iter;
+                  maxlen = masklen;
+                }
+              }
+              if ( 0 == maxlen ) {
+                session.add( new TableIpAddress( ptrOrganization, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
+              }
+              else {
+                session.add( new TableIpAddress( ptrOrganization, ptrIpAddress, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
+              }
+//              transaction.commit();
+            }
+            catch ( dbo::Exception& e ) {
+              std::cout << "error 4 " << e.what() << std::endl;
+            }
+                      }
+          //dbo::Transaction transaction( session );
           //ptrIpAddress = 
-                  session.add( 
-                  new TableIpAddress( ptrOrganization, network.cidr.str(), network.sName, network.sDescription, "", "", sSource ) );
+          //  session.add( 
+          //    new TableIpAddress( ptrOrganization, network.cidr.str(), network.sName, network.sDescription, "", "", sSource ) );
           transaction.commit();
         }
         catch ( dbo::Exception& e ) {
@@ -129,13 +182,11 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   
   // need to do some error checking reqarding above before performing following
   
-  std::string sSource( "smc xml");
-  
   typedef dbo::collection<ptrIpAddress_t> ptrIpAddresses_t;
   try {
     dbo::Transaction transaction( session );
     //ptrIpAddresses_t ptrIpAddresses = session.query<ptrIpAddress_t>( "select * from ipaddress").where("source=?").bind(sSource);
-    ptrIpAddresses_t ptrIpAddresses = session.find<TableIpAddress>().where("source=?").bind(sSource);
+    ptrIpAddresses_t ptrIpAddresses = session.find<TableIpAddress>().where("source like ? or source=?").bind("smc xml%").bind("network.csv");
     for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
       iter->remove();
     }
@@ -157,7 +208,8 @@ void InitDatabase( dbo::backend::Postgres& be ) {
    
   try {
     //dbo::Transaction transaction( session );
-    InsertNetwork net( session, ptrQvsl, "smc xml");
+    InsertNetwork net( session, ptrQvsl );
+    ImportNetworkCsvFile( net );
     ImportSmcXml( net );
     net.Finish();
     //transaction.commit();

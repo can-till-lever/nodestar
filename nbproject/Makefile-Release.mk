@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Cidr.o \
 	${OBJECTDIR}/WebApp.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/utility/ImportNetworkCsv.o \
 	${OBJECTDIR}/utility/ImportSmcXml.o \
 	${OBJECTDIR}/utility/PopulateBasicIpAddresses.o
 
@@ -80,6 +81,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/utility/ImportNetworkCsv.o: utility/ImportNetworkCsv.cpp 
+	${MKDIR} -p ${OBJECTDIR}/utility
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportNetworkCsv.o utility/ImportNetworkCsv.cpp
 
 ${OBJECTDIR}/utility/ImportSmcXml.o: utility/ImportSmcXml.cpp 
 	${MKDIR} -p ${OBJECTDIR}/utility

@@ -1,6 +1,7 @@
 /* 
  * File:   TableIpAddress.h
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on September 18, 2014, 5:26 PM
  */
@@ -36,6 +37,15 @@ namespace Wt {
     };
   }
 }
+
+// unused at the moment, to be completed
+class QueryIpAddress {
+public:
+  dbo::ptr<TableIpAddress> ptrParent;
+  Cidr cidrIpAddress;
+protected:
+private:
+};
 
 class TableIpAddress {
 public:

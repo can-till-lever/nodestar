@@ -1,6 +1,7 @@
 /* 
  * File:   ImportSmcXml.h
  * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on September 30, 2014, 10:44
  */
@@ -40,11 +41,28 @@ void ProcessElement( const ptree& tree, Function& f ) {
       n.sNetwork = element.second.get<std::string>( "<xmlattr>.ipv4_network" );
       n.sName = element.second.get<std::string>( "<xmlattr>.name" );
       n.sComment = element.second.get<std::string>( "<xmlattr>.comment", "" );
-      std::cout << n.sNetwork << ", " << n.sName << std::endl;
+      std::cout << "network: " << n.sNetwork << ", " << n.sName << std::endl;
       std::string sBroadcast = element.second.get<std::string>( "<xmlattr>.broadcast" );
       if ( "true" != sBroadcast ) throw std::runtime_error( "bad broadcast" );
-      (f)( n.sNetwork, n.sName, n.sComment );
+      (f)( n.sNetwork, n.sName, n.sComment, "smc xml network" );
     }
+    if ( "host" == element.first ) {
+      Network n;
+      n.sName = element.second.get<std::string>( "<xmlattr>.name" );
+      n.sNetwork = element.second.get<std::string>( "mvia_address.<xmlattr>.address" );
+      n.sComment = element.second.get<std::string>( "<xmlattr>.comment", "" );
+      std::cout << "host: " << n.sNetwork << ", " << n.sName << std::endl;
+      (f)( n.sNetwork, n.sName, n.sComment, "smc xml host" );
+    }
+    if ( "router" == element.first ) {
+      Network n;
+      n.sName = element.second.get<std::string>( "<xmlattr>.name" );
+      n.sNetwork = element.second.get<std::string>( "mvia_address.<xmlattr>.address" );
+      n.sComment = element.second.get<std::string>( "<xmlattr>.comment", "" );
+      std::cout << "host: " << n.sNetwork << ", " << n.sName << std::endl;
+      (f)( n.sNetwork, n.sName, n.sComment, "smc xml router" );
+    }
+    
     if ( "<xmlattr>" != element.first ) {
       if ( !element.second.empty() ) {
         ProcessElement( element.second, f );
