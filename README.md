@@ -21,7 +21,9 @@ Added capability to parse a tab delimited file containing network addresses via 
 
 Can do a query like the following:
 
-nodestar=# select idorganization_idorganization as cabr, ipaddress, name, description from ipaddress where ipaddress >>= '10.122.39.211/32' order by ipaddress;
+<pre>
+nodestar=# select idorganization_idorganization as cabr, ipaddress, name, description 
+  from ipaddress where ipaddress >>= '10.122.39.211/32' order by ipaddress;
  cabr |     ipaddress     |         name         | description 
 ------+-------------------+----------------------+-------------
  QVSL | 10.0.0.0/8        | rfc1918              | 
@@ -29,7 +31,7 @@ nodestar=# select idorganization_idorganization as cabr, ipaddress, name, descri
  QVSL | 10.122.39.208/29  | Corp 1               | 
  QVSL | 10.122.39.211/32  | Host 2               | 
 (4 rows)
-
+</pre>
 
 2014/09/30
 Mcafee Next Generation Firewall has a rule export capability.  This generates an XML file.

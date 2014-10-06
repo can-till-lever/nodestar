@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 #include <map>
+//#include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 #include <boost/uuid/string_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -65,9 +67,14 @@ struct InsertNetwork {
   ~InsertNetwork( void ) {
     }
     
+  
+  // http://stackoverflow.com/questions/313970/c-stdstring-to-lower-case
+  
   void operator()( const std::string& sNetwork, const std::string& sName, const std::string& sComment, const  std::string& sSource ) {
     // collect addresses, sort masks shortest to longest, then insert as hierarchy into database
     Network network( sNetwork, sName, sComment, sSource );
+    //std::transform(network.sName.begin(), network.sName.end(), network.sName.begin(), ::tolower );
+    boost::algorithm::to_lower( network.sName );
     int len = network.cidr.pflen();
     mapNetworks_iter iter = mapNetworks.find( len );
     if ( mapNetworks.end() == iter ) {
@@ -86,6 +93,7 @@ struct InsertNetwork {
     if ( "" != sIdOrganization ) {
       network.sName = sIdOrganization;
     }
+    boost::algorithm::to_lower( network.sName );
     int len = network.cidr.pflen();
     mapNetworks_iter iter = mapNetworks.find( len );
     if ( mapNetworks.end() == iter ) {
