@@ -11,6 +11,8 @@
 #include <Wt/Dbo/Dbo>
 namespace dbo = Wt::Dbo;
 
+// may need to be able to segment this and do rfc 1918 per organization
+
 void PopulateBasicIpAddresses( dbo::Session& );
 
 #endif	/* POPULATEBASICIPADDRESSES_H */

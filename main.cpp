@@ -20,8 +20,8 @@
 
 #include "SqlTraits.h"
 
-#include "model/TableOrganization.h"
-#include "model/TableIpAddress.h"
+#include "model/DbRecOrganization.h"
+#include "model/DbRecIpAddress.h"
 
 #include "utility/PopulateBasicIpAddresses.h"
 #include "utility/ImportNetworkCsv.h"
@@ -40,8 +40,8 @@ namespace dbo = Wt::Dbo;
  * create database nodestar with owner nodestar;
  */
 
-typedef dbo::ptr<TableOrganization> ptrOrganization_t;
-typedef dbo::ptr<TableIpAddress> ptrIpAddress_t;
+typedef dbo::ptr<DbRecOrganization> ptrOrganization_t;
+typedef dbo::ptr<DbRecIpAddress> ptrIpAddress_t;
 
 struct InsertNetwork {
   dbo::Session& session;
@@ -121,7 +121,7 @@ struct InsertNetwork {
             try {
               ptrIpAddress_t ptrIpAddress;
               int maxlen( 0 );
-              ptrIpAddresses_t ptrIpAddresses = session.find<TableIpAddress>().where("ipaddress>>?").bind( network.cidr.str() );
+              ptrIpAddresses_t ptrIpAddresses = session.find<DbRecIpAddress>().where("ipaddress>>?").bind( network.cidr.str() );
               for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
                 int masklen = (*iter)->cidrIpAddress.pflen();
                 if ( maxlen < masklen ) {
@@ -130,10 +130,10 @@ struct InsertNetwork {
                 }
               }
               if ( 0 == maxlen ) {
-                session.add( new TableIpAddress( ptrOrganization, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
+                session.add( new DbRecIpAddress( ptrOrganization, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
               }
               else {
-                session.add( new TableIpAddress( ptrOrganization, ptrIpAddress, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
+                session.add( new DbRecIpAddress( ptrOrganization, ptrIpAddress, network.cidr.str(), network.sName, network.sDescription, "", "", network.sSource ) );
               }
 //              transaction.commit();
             }
@@ -160,8 +160,8 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   dbo::Session session;
   session.setConnection( be );
 
-  session.mapClass<TableOrganization>( "organization" );
-  session.mapClass<TableIpAddress>( "ipaddress" );
+  session.mapClass<DbRecOrganization>( "organization" );
+  session.mapClass<DbRecIpAddress>( "ipaddress" );
   
   try {
     
@@ -173,10 +173,10 @@ void InitDatabase( dbo::backend::Postgres& be ) {
     
     dbo::Transaction transaction( session );
     
-    TableOrganization* pqvsl 
-            = new TableOrganization( "QVSL", "QuoVadis Services Ltd.", "Bermuda based hosting services",
+    DbRecOrganization* pqvsl 
+            = new DbRecOrganization( "QVSL", "QuoVadis Services Ltd.", "Bermuda based hosting services",
                  "https://www.quovadisglobal.bm/en-GB/HostingSolutions.aspx", 19626 );
-    dbo::ptr<TableOrganization> ptrOrg = session.add( pqvsl );
+    dbo::ptr<DbRecOrganization> ptrOrg = session.add( pqvsl );
     
     transaction.commit();
     
@@ -194,7 +194,7 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   try {
     dbo::Transaction transaction( session );
     //ptrIpAddresses_t ptrIpAddresses = session.query<ptrIpAddress_t>( "select * from ipaddress").where("source=?").bind(sSource);
-    ptrIpAddresses_t ptrIpAddresses = session.find<TableIpAddress>().where("source like ? or source=?").bind("smc xml%").bind("network.csv");
+    ptrIpAddresses_t ptrIpAddresses = session.find<DbRecIpAddress>().where("source like ? or source=?").bind("smc xml%").bind("network.csv");
     for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
       iter->remove();
     }
@@ -207,7 +207,7 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   ptrOrganization_t ptrQvsl;
   try {
     dbo::Transaction transaction( session );
-    ptrQvsl = session.find<TableOrganization>().where("idorganization=?").bind("QVSL");
+    ptrQvsl = session.find<DbRecOrganization>().where("idorganization=?").bind("QVSL");
     transaction.commit();
   }
   catch ( dbo::Exception& e ) {

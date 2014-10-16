@@ -6,8 +6,8 @@
  * Created on September 18, 2014, 5:26 PM
  */
 
-#ifndef TABLEIPADDRESS_H
-#define	TABLEIPADDRESS_H
+#ifndef DBRECIPADDRESS_H
+#define	DBRECIPADDRESS_H
 
 // http://www.boost.org/doc/libs/1_56_0/libs/uuid/uuid.html
 #include <boost/uuid/uuid.hpp>
@@ -23,13 +23,13 @@
 
 namespace dbo = Wt::Dbo;
 
-class TableIpAddress;
-class TableOrganization;
+class DbRecIpAddress;
+class DbRecOrganization;
 
 namespace Wt {
   namespace Dbo {
     template<>
-    struct dbo_traits<TableIpAddress>: public dbo_default_traits {
+    struct dbo_traits<DbRecIpAddress>: public dbo_default_traits {
       typedef boost::uuids::uuid IdType;
       static IdType invalidId() { return boost::uuids::uuid(); }
       static const char* surrogateIdField() { return 0; }
@@ -41,18 +41,18 @@ namespace Wt {
 // unused at the moment, to be completed
 class QueryIpAddress {
 public:
-  dbo::ptr<TableIpAddress> ptrParent;
+  dbo::ptr<DbRecIpAddress> ptrParent;
   Cidr cidrIpAddress;
 protected:
 private:
 };
 
-class TableIpAddress {
+class DbRecIpAddress {
 public:
   
-  TableIpAddress( void ) { Init(); }
-  TableIpAddress( 
-          dbo::ptr<TableOrganization> ptrOrganization_, 
+  DbRecIpAddress( void ) { Init(); }
+  DbRecIpAddress( 
+          dbo::ptr<DbRecOrganization> ptrOrganization_, 
           const std::string& sIpAddress_, 
           const std::string& sName_,
           const std::string& sDescription_,
@@ -64,9 +64,9 @@ public:
   {
     Init();
   }
-  TableIpAddress( 
-          dbo::ptr<TableOrganization> ptrOrganization_, 
-          dbo::ptr<TableIpAddress> ptrParent_,
+  DbRecIpAddress( 
+          dbo::ptr<DbRecOrganization> ptrOrganization_, 
+          dbo::ptr<DbRecIpAddress> ptrParent_,
           const std::string& sIpAddress_, 
           const std::string& sName_,
           const std::string& sDescription_,
@@ -81,9 +81,9 @@ public:
   }
   
   boost::uuids::uuid uuidId;
-  dbo::ptr<TableIpAddress> ptrParent;
+  dbo::ptr<DbRecIpAddress> ptrParent;
   Cidr cidrIpAddress;
-  dbo::ptr<TableOrganization> ptrOrganization;
+  dbo::ptr<DbRecOrganization> ptrOrganization;
   std::string sName;
   std::string sDescription;
   std::string sFqdn;
@@ -92,7 +92,7 @@ public:
   //boost::posix_time::ptime dtCreation;
   Wt::WDateTime dtCreation;
   
-  typedef dbo::collection<dbo::ptr<TableIpAddress> > collectionIpAddresses_t;
+  typedef dbo::collection<dbo::ptr<DbRecIpAddress> > collectionIpAddresses_t;
   collectionIpAddresses_t children;
   
   template<class Action>
@@ -120,5 +120,5 @@ private:
 };
 
 
-#endif	/* TABLEIPADDRESS_H */
+#endif	/* DBRECIPADDRESS_H */
 

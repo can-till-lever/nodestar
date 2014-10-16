@@ -5,13 +5,12 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Cidr.hpp</itemPath>
+      <itemPath>model/DbRecIpAddress.h</itemPath>
+      <itemPath>model/DbRecOrganization.h</itemPath>
       <itemPath>utility/ImportNetworkCsv.h</itemPath>
       <itemPath>utility/ImportSmcXml.h</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
-      <itemPath>model/TableIpAddress.h</itemPath>
-      <itemPath>TableOrganization.h</itemPath>
-      <itemPath>model/TableOrganization.h</itemPath>
       <itemPath>WebApp.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -72,17 +71,15 @@
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="TableOrganization.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="model/TableIpAddress.h" ex="false" tool="3" flavor2="0">
+      <item path="model/DbRecIpAddress.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="model/TableOrganization.h" ex="false" tool="3" flavor2="0">
+      <item path="model/DbRecOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="notes.txt" ex="false" tool="3" flavor2="0">
       </item>
@@ -130,17 +127,15 @@
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="TableOrganization.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="model/TableIpAddress.h" ex="false" tool="3" flavor2="0">
+      <item path="model/DbRecIpAddress.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="model/TableOrganization.h" ex="false" tool="3" flavor2="0">
+      <item path="model/DbRecOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="notes.txt" ex="false" tool="3" flavor2="0">
       </item>

@@ -6,20 +6,20 @@
  * Created on September 18, 2014, 5:23 PM
  */
 
-#ifndef TABLEORGANIZATION_H
-#define	TABLEORGANIZATION_H
+#ifndef DBRECORGANIZATION_H
+#define	DBRECORGANIZATION_H
 
 #include <Wt/Dbo/Dbo>
 
 namespace dbo = Wt::Dbo;
 
-class TableIpAddress;
-class TableOrganization;
+class DbRecIpAddress;
+class DbRecOrganization;
 
 namespace Wt {
   namespace Dbo {
     template<>
-    struct dbo_traits<TableOrganization>: public dbo_default_traits {
+    struct dbo_traits<DbRecOrganization>: public dbo_default_traits {
       typedef std::string IdType;
       static IdType invalidId() {return std::string(); }
       static const char* surrogateIdField() { return 0; }
@@ -28,11 +28,11 @@ namespace Wt {
   }
 }
 
-class TableOrganization {
+class DbRecOrganization {
 public:
   
-  TableOrganization( void ): nAsn( 0 ) {};
-  TableOrganization( 
+  DbRecOrganization( void ): nAsn( 0 ) {};
+  DbRecOrganization( 
           const std::string& sIdOrganization_, 
           const std::string& sName_,
           const std::string& sDescription_,
@@ -47,7 +47,7 @@ public:
   std::string sUrl;
   int nAsn;
   
-  typedef dbo::collection<dbo::ptr<TableIpAddress> > collectionIpAddresses_t;
+  typedef dbo::collection<dbo::ptr<DbRecIpAddress> > collectionIpAddresses_t;
   collectionIpAddresses_t collectionIpAddresses;
   
   template<class Action>
@@ -65,5 +65,5 @@ private:
   
 };
 
-#endif	/* TABLEORGANIZATION_H */
+#endif	/* DBRECORGANIZATION_H */
 
