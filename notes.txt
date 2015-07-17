@@ -1,0 +1,9 @@
+wt points of interest:
+wt uses opengl libraries
+WT_CPP_11_MODE=-std=c++0x
+
+NetBeans:
+sudo apt-get update
+sudo apt-get install openjdk-7-jdk
+sudo update-alternatives --config java
+
