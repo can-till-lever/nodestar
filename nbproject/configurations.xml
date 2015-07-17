@@ -4,14 +4,17 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.h</itemPath>
       <itemPath>Cidr.hpp</itemPath>
       <itemPath>model/DbRecIpAddress.h</itemPath>
       <itemPath>model/DbRecOrganization.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/DbSessionUser.h</itemPath>
       <itemPath>utility/ImportNetworkCsv.h</itemPath>
       <itemPath>utility/ImportSmcXml.h</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/Session.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
-      <itemPath>WebApp.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -22,11 +25,14 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.cpp</itemPath>
       <itemPath>Cidr.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp</itemPath>
       <itemPath>utility/ImportNetworkCsv.cpp</itemPath>
       <itemPath>utility/ImportSmcXml.cpp</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.cpp</itemPath>
-      <itemPath>WebApp.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/Session.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -63,6 +69,46 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/Session.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/Session.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
@@ -70,10 +116,6 @@
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -119,6 +161,46 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/Session.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/Session.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
@@ -126,10 +208,6 @@
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="WebApp.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="WebApp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

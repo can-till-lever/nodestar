@@ -37,6 +37,7 @@ void ProcessElement( const ptree& tree, Function& f ) {
   BOOST_FOREACH( ptree::value_type const& element, tree ) {
     //std::cout << "[" << element.first << "]";
     if ( "network" == element.first ) {
+      // <network broadcast="true" ipv4_network="192.0.2.0/28" name="public1"/>
       Network n;
       n.sNetwork = element.second.get<std::string>( "<xmlattr>.ipv4_network" );
       n.sName = element.second.get<std::string>( "<xmlattr>.name" );
@@ -47,6 +48,8 @@ void ProcessElement( const ptree& tree, Function& f ) {
       (f)( n.sNetwork, n.sName, n.sComment, "smc xml network" );
     }
     if ( "host" == element.first ) {
+       // <host name="host1">
+      //     <mvia_address address="172.17.18.3"/>      
       Network n;
       n.sName = element.second.get<std::string>( "<xmlattr>.name" );
       n.sNetwork = element.second.get<std::string>( "mvia_address.<xmlattr>.address" );
@@ -55,6 +58,8 @@ void ProcessElement( const ptree& tree, Function& f ) {
       (f)( n.sNetwork, n.sName, n.sComment, "smc xml host" );
     }
     if ( "router" == element.first ) {
+      // <router name="router1">
+      //   <mvia_address address="10.25.56.5"/>      
       Network n;
       n.sName = element.second.get<std::string>( "<xmlattr>.name" );
       n.sNetwork = element.second.get<std::string>( "mvia_address.<xmlattr>.address" );
@@ -62,6 +67,11 @@ void ProcessElement( const ptree& tree, Function& f ) {
       std::cout << "host: " << n.sNetwork << ", " << n.sName << std::endl;
       (f)( n.sNetwork, n.sName, n.sComment, "smc xml router" );
     }
+    //if ( "dynamic_nat" == element.first ) {
+      // <dynamic_nat generate_arp="true">
+      //   <packet_description first_port="1024" last_port="65535" min_ip="10.9.8.4" netmask="255.255.255.255"/>      
+    //  Network n;
+    //}
     
     if ( "<xmlattr>" != element.first ) {
       if ( !element.second.empty() ) {

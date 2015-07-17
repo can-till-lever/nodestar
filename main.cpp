@@ -16,6 +16,8 @@
 #include <boost/uuid/string_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <Wt/WServer>
+
 #include <Wt/Dbo/backend/Postgres>
 
 #include "SqlTraits.h"
@@ -29,7 +31,7 @@
 
 #include "Cidr.hpp"
 
-#include "WebApp.h"
+#include "AppNodeStar.h"
 
 namespace dbo = Wt::Dbo;
 
@@ -153,7 +155,7 @@ struct InsertNetwork {
       }
     }
   }
-};
+}; // struct InsertNetwork
 
 void InitDatabase( dbo::backend::Postgres& be ) {
   
@@ -167,6 +169,8 @@ void InitDatabase( dbo::backend::Postgres& be ) {
     
     //session.dropTables();  // for testing
 
+    // need to have opened the auth stuff before this, in order for this to work
+    // DbSessionUser, DbRecUser, ...
     session.createTables();
     
     PopulateBasicIpAddresses( session );
@@ -190,6 +194,7 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   
   // need to do some error checking reqarding above before performing following
   
+  // remove some old records, as they will be re-populated in the ipaddress table
   typedef dbo::collection<ptrIpAddress_t> ptrIpAddresses_t;
   try {
     dbo::Transaction transaction( session );
@@ -204,6 +209,7 @@ void InitDatabase( dbo::backend::Postgres& be ) {
     std::cout << "error 4 " << e.what() << std::endl;
   }
   
+  // ensure we have the default organization id (does it need to there now, or is it added later?)
   ptrOrganization_t ptrQvsl;
   try {
     dbo::Transaction transaction( session );
@@ -214,6 +220,7 @@ void InitDatabase( dbo::backend::Postgres& be ) {
     std::cout << "error 2 " << e.what() << std::endl;
   }
    
+  // insert some default ip address ranges
   try {
     //dbo::Transaction transaction( session );
     InsertNetwork net( session, ptrQvsl );
@@ -237,8 +244,31 @@ Wt::WApplication* CreateApplication( const Wt::WEnvironment& env ) {
   return new WebApp( env, *pq );
 }
 
-// http://www.webtoolkit.eu/wt/doc/reference/html/InstallationUnix.html
+void StartWeb( int argc, char** argv ) {
+  
+  try {
+    Wt::WServer server(argv[0]);
 
+    server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
+    server.addEntryPoint(Wt::Application, CreateApplication);
+
+//    Session::configureAuth();  // uncomment once Auth module is installed
+
+    if (server.start()) {
+      Wt::WServer::waitForShutdown();
+      server.stop();
+    }
+  } 
+  catch (Wt::WServer::Exception& e) {
+    std::cerr << e.what() << std::endl;
+  } 
+  catch (std::exception &e) {
+    std::cerr << "exception: " << e.what() << std::endl;
+  }
+  
+}
+
+// http://www.webtoolkit.eu/wt/doc/reference/html/InstallationUnix.html
 int main(int argc, char** argv) {
   
   std::string sConnection( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
@@ -247,6 +277,6 @@ int main(int argc, char** argv) {
   
   InitDatabase( *pq );
   
-  //return Wt::WRun( argc, argv, &CreateApplication );
+  //StartWeb( argc, argv );)
 }
 

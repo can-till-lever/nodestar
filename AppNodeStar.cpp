@@ -8,13 +8,13 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
 
-#include "WebApp.h"
+#include "AppNodeStar.h"
 
-WebApp::WebApp( const Wt::WEnvironment& env, dbo::backend::Postgres& pq ): Wt::WApplication( env )  {
+AppNodeStar::AppNodeStar( const Wt::WEnvironment& env, dbo::backend::Postgres& pq ): Wt::WApplication( env )  {
   setTitle( "NodeStar: Network Infrastructure Data Management" );
   root()->addWidget( new Wt::WText( "More to Come" ) );
 }
 
-WebApp::~WebApp() {
+AppNodeStar::~AppNodeStar() {
 }
 

@@ -35,8 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/399854019/AppNodeStar.o \
+	${OBJECTDIR}/_ext/399854019/Session.o \
+	${OBJECTDIR}/_ext/1074664663/DbRecUser.o \
+	${OBJECTDIR}/_ext/1074664663/DbSessionUser.o \
 	${OBJECTDIR}/Cidr.o \
-	${OBJECTDIR}/WebApp.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utility/ImportNetworkCsv.o \
 	${OBJECTDIR}/utility/ImportSmcXml.o \
@@ -67,15 +70,30 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/_ext/399854019/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/399854019
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/399854019/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
+
+${OBJECTDIR}/_ext/399854019/Session.o: /home/sysadmin/projects/nodestar/Session.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/399854019
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/399854019/Session.o /home/sysadmin/projects/nodestar/Session.cpp
+
+${OBJECTDIR}/_ext/1074664663/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1074664663
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1074664663/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
+
+${OBJECTDIR}/_ext/1074664663/DbSessionUser.o: /home/sysadmin/projects/nodestar/model/DbSessionUser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1074664663
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1074664663/DbSessionUser.o /home/sysadmin/projects/nodestar/model/DbSessionUser.cpp
+
 ${OBJECTDIR}/Cidr.o: Cidr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cidr.o Cidr.cpp
-
-${OBJECTDIR}/WebApp.o: WebApp.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/WebApp.o WebApp.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
