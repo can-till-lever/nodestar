@@ -9,10 +9,8 @@
  * 
  */
 
-#ifndef DBSESSIONUSER_H
-#define	DBSESSIONUSER_H
+#pragma once
 
-#include <Wt/Auth/Login>
 
 #include <Wt/Dbo/ptr>
 #include <Wt/Dbo/Session>
@@ -29,16 +27,16 @@ typedef Wt::Auth::Dbo::UserDatabase<AuthInfo> UserDatabase;
 // 2015/02/18 this whole class might be a problem as it attempts to create the database tables.
 //   need to merge the table creation elsewhere, possibly as a call back
 //class DbSessionUser: public dbo::Session {
-class DbSessionUser {
+class UserAuth {
 public:
   
-  DbSessionUser( dbo::Session& session );
-  virtual ~DbSessionUser();
+  UserAuth( dbo::Session& session );
+  virtual ~UserAuth();
   
   dbo::ptr<DbRecUser> user() const;
   
   Wt::Auth::AbstractUserDatabase& users();
-  Wt::Auth::Login& login() { return m_login; }
+  //Wt::Auth::Login& login() { return m_login; }
   
   static void configureAuth();
   
@@ -49,11 +47,9 @@ public:
 private:
 
   //dbo::backend::Postgres& m_connection;  // this may not be correct, database may be opened elsewhere
-  dbo::Session& m_session;
+  dbo::Session& m_session;  // needs to be adjusted to use ConnectionPool
   UserDatabase* m_users;
-  Wt::Auth::Login m_login;
+  
 
 };
-
-#endif	/* DBSESSIONUSER_H */
 

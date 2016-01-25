@@ -1,12 +1,12 @@
 /* 
  * File:   DbRecUser.h
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on December 5, 2014, 5:56 PM
  */
 
-#ifndef DBRECUSER_H
-#define	DBRECUSER_H
+#pragma once
 
 #include <Wt/Dbo/Types>
 #include <Wt/WGlobal>
@@ -33,6 +33,3 @@ private:
 };
 
 DBO_EXTERN_TEMPLATES(DbRecUser);
-
-#endif	/* DBRECUSER_H */
-

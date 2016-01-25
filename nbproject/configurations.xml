@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -9,12 +9,12 @@
       <itemPath>model/DbRecIpAddress.h</itemPath>
       <itemPath>model/DbRecOrganization.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.h</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/model/DbSessionUser.h</itemPath>
       <itemPath>utility/ImportNetworkCsv.h</itemPath>
       <itemPath>utility/ImportSmcXml.h</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.h</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/Session.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/Server.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -28,11 +28,11 @@
       <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.cpp</itemPath>
       <itemPath>Cidr.cpp</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp</itemPath>
       <itemPath>utility/ImportNetworkCsv.cpp</itemPath>
       <itemPath>utility/ImportSmcXml.cpp</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/Session.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/Server.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -66,6 +66,7 @@
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
             <linkerLibLibItem>wthttp</linkerLibLibItem>
+            <linkerLibLibItem>boost_system-gcc48-mt-1_58</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -79,12 +80,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Session.cpp"
+      <item path="/home/sysadmin/projects/nodestar/Server.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Session.h"
+      <item path="/home/sysadmin/projects/nodestar/Server.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -99,12 +100,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp"
+      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.h"
+      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -171,12 +172,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Session.cpp"
+      <item path="/home/sysadmin/projects/nodestar/Server.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Session.h"
+      <item path="/home/sysadmin/projects/nodestar/Server.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -191,12 +192,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.cpp"
+      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbSessionUser.h"
+      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.h"
             ex="false"
             tool="3"
             flavor2="0">

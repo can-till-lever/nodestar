@@ -1,16 +1,22 @@
 /* 
  * File:   WebApp.cpp
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  * 
  * Created on September 22, 2014, 4:38 PM
  */
 
+#include <Wt/WEnvironment>
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
 
+#include <Wt/Auth/AuthWidget>
+#include <Wt/Auth/PasswordService>
+
 #include "AppNodeStar.h"
 
-AppNodeStar::AppNodeStar( const Wt::WEnvironment& env, dbo::backend::Postgres& pq ): Wt::WApplication( env )  {
+AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 )  {
+  m_pServer = dynamic_cast<Server*>( env.server() );
   setTitle( "NodeStar: Network Infrastructure Data Management" );
   root()->addWidget( new Wt::WText( "More to Come" ) );
 }
@@ -18,3 +24,8 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env, dbo::backend::Postgres& p
 AppNodeStar::~AppNodeStar() {
 }
 
+void AppNodeStar::initialize() {
+}
+
+void AppNodeStar::finalize() {
+}

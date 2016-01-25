@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Linux
 CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
@@ -35,10 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/399854019/AppNodeStar.o \
-	${OBJECTDIR}/_ext/399854019/Session.o \
-	${OBJECTDIR}/_ext/1074664663/DbRecUser.o \
-	${OBJECTDIR}/_ext/1074664663/DbSessionUser.o \
+	${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o \
+	${OBJECTDIR}/_ext/e82ab63d/Server.o \
+	${OBJECTDIR}/_ext/400e14d7/DbRecUser.o \
+	${OBJECTDIR}/_ext/400e14d7/UserAuth.o \
 	${OBJECTDIR}/Cidr.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utility/ImportNetworkCsv.o \
@@ -60,7 +60,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/local/lib -lcidr -lwt -lwtdbo -lwtdbopostgres -lwthttp
+LDLIBSOPTIONS=-L/usr/local/lib -lcidr -lwt -lwtdbo -lwtdbopostgres -lwthttp -lboost_system-gcc48-mt-1_58
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -70,25 +70,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/399854019/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/399854019
+${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/399854019/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
 
-${OBJECTDIR}/_ext/399854019/Session.o: /home/sysadmin/projects/nodestar/Session.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/399854019
+${OBJECTDIR}/_ext/e82ab63d/Server.o: /home/sysadmin/projects/nodestar/Server.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/399854019/Session.o /home/sysadmin/projects/nodestar/Session.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/Server.o /home/sysadmin/projects/nodestar/Server.cpp
 
-${OBJECTDIR}/_ext/1074664663/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1074664663
+${OBJECTDIR}/_ext/400e14d7/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1074664663/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
 
-${OBJECTDIR}/_ext/1074664663/DbSessionUser.o: /home/sysadmin/projects/nodestar/model/DbSessionUser.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1074664663
+${OBJECTDIR}/_ext/400e14d7/UserAuth.o: /home/sysadmin/projects/nodestar/model/UserAuth.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1074664663/DbSessionUser.o /home/sysadmin/projects/nodestar/model/DbSessionUser.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/UserAuth.o /home/sysadmin/projects/nodestar/model/UserAuth.cpp
 
 ${OBJECTDIR}/Cidr.o: Cidr.cpp 
 	${MKDIR} -p ${OBJECTDIR}

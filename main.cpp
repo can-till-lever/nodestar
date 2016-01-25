@@ -16,9 +16,8 @@
 #include <boost/uuid/string_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Wt/WServer>
-
 #include <Wt/Dbo/backend/Postgres>
+#include <Wt/WEnvironment>
 
 #include "SqlTraits.h"
 
@@ -31,6 +30,9 @@
 
 #include "Cidr.hpp"
 
+//#include "SessionNodeStar"
+
+#include "Server.h"
 #include "AppNodeStar.h"
 
 namespace dbo = Wt::Dbo;
@@ -157,13 +159,18 @@ struct InsertNetwork {
   }
 }; // struct InsertNetwork
 
-void InitDatabase( dbo::backend::Postgres& be ) {
+void InitDatabase( dbo::FixedSqlConnectionPool& pool ) {
   
   dbo::Session session;
-  session.setConnection( be );
+  //session.setConnection( be );
+  session.setConnectionPool( pool );
 
+  // 20160125 put these into a separate file to be called, much like UserAuth?
   session.mapClass<DbRecOrganization>( "organization" );
   session.mapClass<DbRecIpAddress>( "ipaddress" );
+  
+  // 20160125 will need to include mapClass from the AppAuth portion as well
+  //      maybe as call backs which can be registered
   
   try {
     
@@ -235,19 +242,14 @@ void InitDatabase( dbo::backend::Postgres& be ) {
   
 }
 
-dbo::backend::Postgres* pq = 0;
-
 Wt::WApplication* CreateApplication( const Wt::WEnvironment& env ) {
-  if ( 0 == pq ) {
-    throw std::runtime_error( "no connection" );
-  }
-  return new WebApp( env, *pq );
+  return new AppNodeStar( env );
 }
 
-void StartWeb( int argc, char** argv ) {
+void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) {
   
   try {
-    Wt::WServer server(argv[0]);
+    Server server(pool, argv[0]);
 
     server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
     server.addEntryPoint(Wt::Application, CreateApplication);
@@ -271,12 +273,16 @@ void StartWeb( int argc, char** argv ) {
 // http://www.webtoolkit.eu/wt/doc/reference/html/InstallationUnix.html
 int main(int argc, char** argv) {
   
+  dbo::backend::Postgres* pq = 0;
+  
   std::string sConnection( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
   pq = new dbo::backend::Postgres( sConnection );
   //pq->setProperty( "show-queries", "true" );
   
-  InitDatabase( *pq );
+  dbo::FixedSqlConnectionPool pool( pq, 4 );
   
-  //StartWeb( argc, argv );)
+  InitDatabase( pool );
+  
+  StartAppManger( argc, argv, pool );
 }
 

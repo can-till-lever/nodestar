@@ -1,6 +1,7 @@
 /* 
  * File:   WebApp.h
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on September 22, 2014, 4:38 PM
  * 
@@ -18,29 +19,37 @@
 #include <Wt/WApplication>
 #include <Wt/Dbo/backend/Postgres>
 
+#include <Wt/Auth/Login>
+
+#include "Server.h"
+
 //#include "Session.h"   // restore once session file is associated
 
 namespace dbo = Wt::Dbo;
 
 class AppNodeStar: public Wt::WApplication {
 public:
-  AppNodeStar( const Wt::WEnvironment&, dbo::backend::Postgres& );
+  AppNodeStar( const Wt::WEnvironment& );
   virtual ~AppNodeStar( void );
   
   void initialize( void ); // Initializes the application, post-construction. 
   void finalize( void );  // Finalizes the application, pre-destruction.
   
   void authEvent() {
-//    if (m_session.login().loggedIn())
-//      Wt::log("notice") << "User " << m_session.login().user().id()
-//			<< " logged in.";
-//    else
-//      Wt::log("notice") << "User logged out.";
+    if ( m_login.loggedIn() )
+      Wt::log("notice") << "User " << m_login.user().id()
+			<< " logged in.";
+    else
+      Wt::log("notice") << "User logged out.";
   };
   
 protected:
 private:
 //  Session m_session;
+  
+  Server* m_pServer;
+  
+  Wt::Auth::Login m_login;  // line 96 in UserAuth needs to be fixed
   
   void AuthStuff( void );
   
