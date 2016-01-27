@@ -10,7 +10,7 @@
 
 #include "DbRecUser.h"
 
-DBO_INSTANTIATE_TEMPLATES(DbRecUser);
+//DBO_INSTANTIATE_TEMPLATES(DbRecUser);
 
 DbRecUser::DbRecUser() {
 }

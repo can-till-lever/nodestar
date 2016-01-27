@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <Wt/Dbo/Types>
+//#include <Wt/Dbo/Types>
+#include <Wt/Auth/Dbo/AuthInfo>
 #include <Wt/WGlobal>
 
 namespace dbo = Wt::Dbo;
 
 class DbRecUser;
-typedef Wt::Auth::Dbo::AuthInfo<DbRecUser> AuthInfo;
+typedef Wt::Auth::Dbo::AuthInfo<DbRecUser> AuthInfoTables;
 
 class DbRecUser {
 public:
@@ -29,7 +30,7 @@ public:
   
 protected:
 private:
-
+  
 };
 
-DBO_EXTERN_TEMPLATES(DbRecUser);
+//DBO_EXTERN_TEMPLATES(DbRecUser);

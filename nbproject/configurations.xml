@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>/home/sysadmin/projects/nodestar/AppAuth.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.h</itemPath>
       <itemPath>Cidr.hpp</itemPath>
       <itemPath>model/DbRecIpAddress.h</itemPath>
@@ -25,6 +26,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>/home/sysadmin/projects/nodestar/AppAuth.cpp</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.cpp</itemPath>
       <itemPath>Cidr.cpp</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</itemPath>
@@ -70,6 +72,16 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/sysadmin/projects/nodestar/AppAuth.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/AppAuth.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
             ex="false"
             tool="1"
@@ -162,6 +174,16 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="/home/sysadmin/projects/nodestar/AppAuth.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/AppAuth.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
             ex="false"
             tool="1"

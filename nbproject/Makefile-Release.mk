@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/e82ab63d/AppAuth.o \
 	${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o \
 	${OBJECTDIR}/_ext/e82ab63d/Server.o \
 	${OBJECTDIR}/_ext/400e14d7/DbRecUser.o \
@@ -69,6 +70,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/_ext/e82ab63d/AppAuth.o: /home/sysadmin/projects/nodestar/AppAuth.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppAuth.o /home/sysadmin/projects/nodestar/AppAuth.cpp
 
 ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d

@@ -15,8 +15,11 @@
 
 #include "AppNodeStar.h"
 
-AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 )  {
+AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ) {
+  
   m_pServer = dynamic_cast<Server*>( env.server() );
+  m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
+  
   setTitle( "NodeStar: Network Infrastructure Data Management" );
   root()->addWidget( new Wt::WText( "More to Come" ) );
 }

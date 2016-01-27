@@ -1,13 +1,9 @@
 /* 
- * File:   WebApp.h
+ * File:   AppAuth.h
  * Author: Raymond Burkholder
  *         raymond@burkholder.net
  *
- * Created on September 22, 2014, 4:38 PM
- * 
- * access functions in cidr library to show ranges and such
- * parse zone files
- * parse stonegate xml file (wt has xml parser library?)
+ * Created on January 27, 2016, 2:59 PM
  */
 
 #pragma once
@@ -21,22 +17,28 @@
 
 #include "Server.h"
 
-class AppNodeStar: public Wt::WApplication {
+class AppAuth: public Wt::WApplication {
 public:
-  AppNodeStar( const Wt::WEnvironment& );  // constructor as an application
-  virtual ~AppNodeStar( void );
+  
+  AppAuth( const Wt::WEnvironment& );
+  virtual ~AppAuth();
   
   void initialize( void ); // Initializes the application, post-construction. 
   void finalize( void );  // Finalizes the application, pre-destruction.
   
 protected:
 private:
-  
+
   typedef boost::shared_ptr<UserAuth> pUserAuth_t;
   pUserAuth_t m_pUserAuth;
   
   Server* m_pServer; // object managed by wt
+  
+  dbo::Session m_Session;
 
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );
+  
 };
+
+

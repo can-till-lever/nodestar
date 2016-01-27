@@ -10,14 +10,15 @@
 #include <string>
 #include <vector>
 #include <map>
-//#include <algorithm>
+
 #include <boost/algorithm/string.hpp>
 
 #include <boost/uuid/string_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Wt/Dbo/backend/Postgres>
 #include <Wt/WEnvironment>
+#include <Wt/Dbo/backend/Postgres>
+
 
 #include "SqlTraits.h"
 
@@ -30,10 +31,9 @@
 
 #include "Cidr.hpp"
 
-//#include "SessionNodeStar"
-
 #include "Server.h"
 #include "AppNodeStar.h"
+#include "AppAuth.h"
 
 namespace dbo = Wt::Dbo;
 
@@ -159,26 +159,16 @@ struct InsertNetwork {
   }
 }; // struct InsertNetwork
 
-void InitDatabase( dbo::FixedSqlConnectionPool& pool ) {
+void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
   
   dbo::Session session;
-  //session.setConnection( be );
   session.setConnectionPool( pool );
 
   // 20160125 put these into a separate file to be called, much like UserAuth?
-  session.mapClass<DbRecOrganization>( "organization" );
-  session.mapClass<DbRecIpAddress>( "ipaddress" );
-  
-  // 20160125 will need to include mapClass from the AppAuth portion as well
-  //      maybe as call backs which can be registered
+//  session.mapClass<DbRecOrganization>( "organization" );
+//  session.mapClass<DbRecIpAddress>( "ipaddress" );
   
   try {
-    
-    //session.dropTables();  // for testing
-
-    // need to have opened the auth stuff before this, in order for this to work
-    // DbSessionUser, DbRecUser, ...
-    session.createTables();
     
     PopulateBasicIpAddresses( session );
     
@@ -193,10 +183,10 @@ void InitDatabase( dbo::FixedSqlConnectionPool& pool ) {
     
   }
   catch ( dbo::Exception& e ) {
-    std::cout << "error 1 " << e.what() << std::endl;
+    std::cout << "PopulateDatabase: errors 1 " << e.what() << std::endl;
   }
   catch (...) {
-    std::cout << "errors" << std::endl;
+    std::cout << "PopulateDatabase: errors 2" << std::endl;
   }
   
   // need to do some error checking reqarding above before performing following
@@ -242,20 +232,65 @@ void InitDatabase( dbo::FixedSqlConnectionPool& pool ) {
   
 }
 
-Wt::WApplication* CreateApplication( const Wt::WEnvironment& env ) {
+void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
+  
+  try {
+    
+    dbo::Session session;
+    session.setConnectionPool( pool );
+
+    // 20160125 put these into a separate file to be called, much like UserAuth?
+    session.mapClass<DbRecOrganization>( "organization" );
+    session.mapClass<DbRecIpAddress>( "ipaddress" );
+    
+    UserAuth::MapClasses( session );
+
+    session.dropTables();  // for testing
+    session.createTables();
+    
+  //PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
+    // populate auth table with default admin
+  
+    
+    
+//    {  // initialize tables for user authentication/authorization functions
+//      typedef boost::shared_ptr<UserAuth> pUserAuth_t;
+//      pUserAuth_t pUserAuth;
+//      pUserAuth.reset( new UserAuth( pool ) );
+//      pUserAuth
+      //pUserAuth->InitializeTables();
+//    }
+  }
+  catch ( Wt::Dbo::Exception& e ) {
+    std::cout << "InitializeTables Errors: " << e.what() << std::endl;
+    throw;
+  }
+  
+    
+}
+
+Wt::WApplication* CreateAppNodeStar( const Wt::WEnvironment& env ) {
   return new AppNodeStar( env );
+}
+
+Wt::WApplication* CreateAppAuth( const Wt::WEnvironment& env ) {
+  return new AppAuth( env );
 }
 
 void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) {
   
   try {
+    
+    //InitializeTables( pool );
+    
     Server server(pool, argv[0]);
+    
+    UserAuth::configureAuth();
 
     server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
-    server.addEntryPoint(Wt::Application, CreateApplication);
-
-//    Session::configureAuth();  // uncomment once Auth module is installed
-
+    server.addEntryPoint( Wt::Application, CreateAppNodeStar);
+    server.addEntryPoint( Wt::Application, CreateAppAuth, "/auth" );
+    
     if (server.start()) {
       Wt::WServer::waitForShutdown();
       server.stop();
@@ -277,11 +312,10 @@ int main(int argc, char** argv) {
   
   std::string sConnection( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
   pq = new dbo::backend::Postgres( sConnection );
-  //pq->setProperty( "show-queries", "true" );
+  
+  pq->setProperty( "show-queries", "true" );
   
   dbo::FixedSqlConnectionPool pool( pq, 4 );
-  
-  InitDatabase( pool );
   
   StartAppManger( argc, argv, pool );
 }

@@ -11,45 +11,56 @@
 
 #pragma once
 
-
-#include <Wt/Dbo/ptr>
-#include <Wt/Dbo/Session>
-//#include <Wt/Dbo/backend/Sqlite3>
-//#include <Wt/Dbo/backend/Postgres>
+#include <Wt/Dbo/FixedSqlConnectionPool>
+#include <Wt/Auth/Dbo/UserDatabase>
+#include <Wt/Auth/Login>
 
 #include "DbRecUser.h"
 
 namespace dbo = Wt::Dbo;
 
 // need to check this out for fit into the scheme of things
-typedef Wt::Auth::Dbo::UserDatabase<AuthInfo> UserDatabase;
+typedef Wt::Auth::Dbo::UserDatabase<AuthInfoTables> UserDatabase;  // AuthInfoRecord is typdef in DbRecUser
 
-// 2015/02/18 this whole class might be a problem as it attempts to create the database tables.
-//   need to merge the table creation elsewhere, possibly as a call back
-//class DbSessionUser: public dbo::Session {
 class UserAuth {
 public:
   
-  UserAuth( dbo::Session& session );
+  UserAuth( dbo::FixedSqlConnectionPool& pool );
   virtual ~UserAuth();
   
-  dbo::ptr<DbRecUser> user() const;
+  Wt::Auth::AbstractUserDatabase& Users();
+//  UserDatabase* Users();
   
-  Wt::Auth::AbstractUserDatabase& users();
-  //Wt::Auth::Login& login() { return m_login; }
+  static void MapClasses( dbo::Session& session );  
+  void InitializeTables( void );  // empty for now, but useful to pre-populate at some point
   
   static void configureAuth();
+  
+  Wt::Auth::Login& login() { return m_login; }
   
   static const Wt::Auth::AuthService& auth();
   static const Wt::Auth::PasswordService& passwordAuth();
   static const std::vector<const Wt::Auth::OAuthService *>& oAuth();
   
+  void authEvent() {
+    if ( m_login.loggedIn() )
+      Wt::log("notice") << "User " << m_login.user().id()
+			<< " logged in.";
+    else
+      Wt::log("notice") << "User logged out.";
+  };
+  
+protected:
 private:
 
-  //dbo::backend::Postgres& m_connection;  // this may not be correct, database may be opened elsewhere
-  dbo::Session& m_session;  // needs to be adjusted to use ConnectionPool
+  dbo::ptr<DbRecUser> user() const;  // does this belong here?
+  
+  dbo::Session m_session;  // needs to be adjusted to use ConnectionPool
   UserDatabase* m_users;
   
+  Wt::Auth::Login m_login;
+  
+  void CreateTables( void );  // should now be obsolete
 
 };
 
