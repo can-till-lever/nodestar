@@ -6,8 +6,7 @@
  * Created on September 30, 2014, 10:44
  */
 
-#ifndef IMPORTSMCXML_H
-#define	IMPORTSMCXML_H
+#pragma once
 
 #include <fstream>
 #include <string>
@@ -117,7 +116,4 @@ void ImportSmcXml( Function& f ) {
   std::cout << " ... complete. " << std::endl;
   
 }
-
-
-#endif	/* IMPORTSMCXML_H */
 

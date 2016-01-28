@@ -19,7 +19,6 @@
 #include <Wt/WEnvironment>
 #include <Wt/Dbo/backend/Postgres>
 
-
 #include "SqlTraits.h"
 
 #include "model/DbRecOrganization.h"
@@ -48,9 +47,7 @@ typedef dbo::ptr<DbRecOrganization> ptrOrganization_t;
 typedef dbo::ptr<DbRecIpAddress> ptrIpAddress_t;
 
 struct InsertNetwork {
-  dbo::Session& session;
-  ptrOrganization_t ptrOrganization;
-  ptrIpAddress_t ptrIpAddress;
+  
   struct Network {
     std::string sIdOrganization;
     Cidr cidr;
@@ -62,9 +59,15 @@ struct InsertNetwork {
     Network( const std::string& sIdOrganization_, const std::string& sNetwork, const std::string& sName_, const std::string& sDescription_, const  std::string& sSource_ )
             : sIdOrganization( sIdOrganization_ ), cidr( sNetwork ), sName( sName_ ), sDescription( sDescription_ ), sSource( sSource_ ) {}
   };
+  
   typedef std::vector<Network> vNetwork_t;
   typedef std::map<int,vNetwork_t> mapNetworks_t; // a vector per mask length
   typedef mapNetworks_t::iterator mapNetworks_iter;
+  
+  dbo::Session& session;
+  ptrOrganization_t ptrOrganization;
+  ptrIpAddress_t ptrIpAddress;
+  
   mapNetworks_t mapNetworks;
   InsertNetwork( dbo::Session& session_, ptrOrganization_t ptrOrganization_ )
     : session( session_ ), ptrOrganization( ptrOrganization_ ) {};
@@ -83,9 +86,10 @@ struct InsertNetwork {
     mapNetworks_iter iter = mapNetworks.find( len );
     if ( mapNetworks.end() == iter ) {
       std::cout << "adding vector of length " << len << " for " << sNetwork << std::endl;
-      vNetwork_t vNetwork;
-      mapNetworks[ len ] = vNetwork;
-      iter = mapNetworks.find( len );
+      vNetwork_t vNetwork; // zero length vector
+      // mapNetworks[ len ] = vNetwork;
+      // iter = mapNetworks.find( len );
+      iter = mapNetworks.insert( mapNetworks.begin(), mapNetworks_t::value_type( len, vNetwork ) );
     }
     iter->second.push_back(network);
   }
@@ -103,12 +107,14 @@ struct InsertNetwork {
     if ( mapNetworks.end() == iter ) {
       std::cout << "adding vector of length " << len << " for " << sNetwork << std::endl;
       vNetwork_t vNetwork;
-      mapNetworks[ len ] = vNetwork;
-      iter = mapNetworks.find( len );
+      //mapNetworks[ len ] = vNetwork;
+      //iter = mapNetworks.find( len );
+      iter = mapNetworks.insert( mapNetworks.begin(), mapNetworks_t::value_type( len, vNetwork ) );
     }
     iter->second.push_back(network);
   }
   void Finish( void ) {
+    // from short mask to longer mask
     for ( mapNetworks_iter miter = mapNetworks.begin(); mapNetworks.end() != miter; ++miter ) {
       vNetwork_t& vNetwork( miter->second );
       for ( vNetwork_t::const_iterator viter = vNetwork.begin(); vNetwork.end() != viter; ++viter ) {
@@ -159,15 +165,20 @@ struct InsertNetwork {
   }
 }; // struct InsertNetwork
 
+void MapClasses( dbo::Session& session ) {
+  
+    session.mapClass<DbRecOrganization>( "organization" );
+    session.mapClass<DbRecIpAddress>( "ipaddress" );
+    
+}
+
 void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
   
   dbo::Session session;
   session.setConnectionPool( pool );
-
-  // 20160125 put these into a separate file to be called, much like UserAuth?
-//  session.mapClass<DbRecOrganization>( "organization" );
-//  session.mapClass<DbRecIpAddress>( "ipaddress" );
   
+  MapClasses( session );
+
   try {
     
     PopulateBasicIpAddresses( session );
@@ -196,7 +207,7 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
   try {
     dbo::Transaction transaction( session );
     //ptrIpAddresses_t ptrIpAddresses = session.query<ptrIpAddress_t>( "select * from ipaddress").where("source=?").bind(sSource);
-    ptrIpAddresses_t ptrIpAddresses = session.find<DbRecIpAddress>().where("source like ? or source=?").bind("smc xml%").bind("network.csv");
+    ptrIpAddresses_t ptrIpAddresses = session.find<DbRecIpAddress>().where("source like ? or source = ?").bind("smc xml%").bind("network.csv");
     for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
       iter->remove();
     }
@@ -217,13 +228,12 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
     std::cout << "error 2 " << e.what() << std::endl;
   }
    
-  // insert some default ip address ranges
   try {
     //dbo::Transaction transaction( session );
-    InsertNetwork net( session, ptrQvsl );
-    ImportNetworkCsvFile( net );
-    ImportSmcXml( net );
-    net.Finish();
+    InsertNetwork net( session, ptrQvsl );  // prep for insertions (first insertion wins, import order is important)
+    ImportNetworkCsvFile( net ); // data from mysql tables
+    ImportSmcXml( net );  // data from main smc
+    net.Finish();  // 
     //transaction.commit();
   }
   catch ( dbo::Exception& e ) {
@@ -232,6 +242,10 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
   
 }
 
+// may need to refine how tables are redone:
+// in some cases, depending upon foreign constraints,
+//   can knock out one table, mapClass the one table to a session, drop it, and recreate it
+//   and leave the other tables intact
 void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
   
   try {
@@ -239,16 +253,12 @@ void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
     dbo::Session session;
     session.setConnectionPool( pool );
 
-    // 20160125 put these into a separate file to be called, much like UserAuth?
-    session.mapClass<DbRecOrganization>( "organization" );
-    session.mapClass<DbRecIpAddress>( "ipaddress" );
-    
+    MapClasses( session );
     UserAuth::MapClasses( session );
 
     session.dropTables();  // for testing
     session.createTables();
     
-  //PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
     // populate auth table with default admin
   
     
@@ -281,7 +291,9 @@ void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) 
   
   try {
     
-    //InitializeTables( pool );
+    InitializeTables( pool );
+    
+    PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
     
     Server server(pool, argv[0]);
     
@@ -313,7 +325,7 @@ int main(int argc, char** argv) {
   std::string sConnection( "host=127.0.0.1 user=nodestar password=nodenode port=5432 dbname=nodestar" );
   pq = new dbo::backend::Postgres( sConnection );
   
-  pq->setProperty( "show-queries", "true" );
+  //pq->setProperty( "show-queries", "true" );
   
   dbo::FixedSqlConnectionPool pool( pq, 4 );
   

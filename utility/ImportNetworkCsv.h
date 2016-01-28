@@ -7,8 +7,7 @@
  * Created on October 1, 2014, 3:37 PM
  */
 
-#ifndef IMPORTCSV_H
-#define	IMPORTCSV_H
+#pragma once
 
 #include <string>
 #include <fstream>
@@ -138,6 +137,4 @@ void ImportNetworkCsvFile( Function& f ) {
   
 }
 
-
-#endif	/* IMPORTCSV_H */
 
