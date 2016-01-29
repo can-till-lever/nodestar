@@ -38,6 +38,7 @@ struct NetworkCsvFields {
 
 // based upon:
 // select n_rec_id, n_network, n_subnet, n_allocated_date, n_cust_id, n_added_by, n_swip, n_whois, n_comments,n_issued from networks into outfile '/tmp/networks.csv';
+// echo 'select n_rec_id, n_network, n_subnet, n_allocated_date, n_cust_id, n_added_by, n_swip, n_whois, n_comments,n_issued from networks' | mysql -p --user username --database dbname 
 // where \n may exist in n_comments field
 
 BOOST_FUSION_ADAPT_STRUCT(

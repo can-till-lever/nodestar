@@ -13,6 +13,8 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
 #include <Wt/WTable>
+#include <Wt/WPushButton>
+#include <Wt/WLineEdit>
 
 #include <Wt/Auth/AuthWidget>
 #include <Wt/Auth/PasswordService>
@@ -29,7 +31,7 @@ namespace {
 typedef dbo::ptr<DbRecOrganization> ptrOrganization_t;
 typedef dbo::ptr<DbRecIpAddress> ptrIpAddress_t;
 
-AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ) {
+AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ), m_pTable( 0 ) {
   
   m_pServer = dynamic_cast<Server*>( env.server() );
   m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
@@ -37,13 +39,28 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   setTitle( "NodeStar: Network Infrastructure Data Management" );
   //root()->addWidget( new Wt::WText( "More to Come" ) );
   
-  dbo::Session session;
-  session.setConnectionPool( m_pServer->GetConnectionPool() );
+  m_Session.setConnectionPool( m_pServer->GetConnectionPool() );
   
-  session.mapClass<DbRecOrganization>( "organization" );
-  session.mapClass<DbRecIpAddress>( "ipaddress" );  
+  m_Session.mapClass<DbRecOrganization>( "organization" );
+  m_Session.mapClass<DbRecIpAddress>( "ipaddress" ); 
   
-  Wt::WTable* pTable = new Wt::WTable( root() );
+  Wt::WPushButton* p = new Wt::WPushButton( "select" );
+  root()->addWidget( p );
+  p->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
+  
+  m_pTable = new Wt::WTable( root() );
+  root()->addWidget( m_pTable );
+  
+}
+
+AppNodeStar::~AppNodeStar() {
+}
+
+void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
+  
+  
+  m_pTable->clear();
+  
   int iRow( 0 );
   
   typedef std::map<boost::uuids::uuid,std::string> mapParents_t;
@@ -51,9 +68,9 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   
   typedef dbo::collection<ptrIpAddress_t> ptrIpAddresses_t;
   try {
-    dbo::Transaction transaction( session );
+    dbo::Transaction transaction( m_Session );
     //ptrIpAddresses_t ptrIpAddresses = session.query<ptrIpAddress_t>( "select * from ipaddress").where("source=?").bind(sSource);
-    ptrIpAddresses_t ptrIpAddresses = session.find<DbRecIpAddress>().orderBy( "ipaddress");
+    ptrIpAddresses_t ptrIpAddresses = m_Session.find<DbRecIpAddress>().orderBy( "ipaddress");
     for ( ptrIpAddresses_t::iterator iter = ptrIpAddresses.begin(); iter != ptrIpAddresses.end(); ++iter ) {
       //iter->remove();
       std::string prefix;
@@ -63,7 +80,7 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
           boost::uuids::uuid parent = iter->get()->ptrParent->uuidId;
           mapParents_t::const_iterator iter = mapParents.find( parent );
           if ( mapParents.end() == iter )
-            prefix = "##";
+            prefix = "??";
           else
             prefix = iter->second;
           
@@ -76,15 +93,15 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
         parent = iter->get()->ptrParent->uuidId;
         mapParents_t::const_iterator iter = mapParents.find( parent );
         if ( mapParents.end() == iter )
-          prefix = "xx";
+          prefix = "??";
         else 
           prefix = iter->second;
       }
       std::stringstream ss;
       ss << iter->get()->cidrIpAddress;
-      pTable->elementAt( iRow, 0 )->addWidget( new Wt::WText( prefix + ss.str() ) );
-      pTable->elementAt( iRow, 1 )->addWidget( new Wt::WText( iter->get()->sName ) );
-      pTable->elementAt( iRow, 2 )->addWidget( new Wt::WText( iter->get()->sDescription ) );
+      m_pTable->elementAt( iRow, 0 )->addWidget( new Wt::WText( prefix + ss.str() ) );
+      m_pTable->elementAt( iRow, 1 )->addWidget( new Wt::WText( iter->get()->sName ) );
+      m_pTable->elementAt( iRow, 2 )->addWidget( new Wt::WText( iter->get()->sDescription ) );
       ++iRow;
     }
     transaction.commit();  
@@ -92,11 +109,6 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   catch ( dbo::Exception& e ) {
     std::cout << "AppNodeStar error " << e.what() << std::endl;
   }
-  
-}
-
-
-AppNodeStar::~AppNodeStar() {
 }
 
 void AppNodeStar::initialize() {

@@ -25,7 +25,7 @@ AppAuth::AppAuth( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pSer
  
   m_pUserAuth->login().changed().connect( m_pUserAuth.get(), &UserAuth::authEvent );
 
-  useStyleSheet("css/style.css");
+  //useStyleSheet("css/style.css");
 
   Wt::Auth::AuthWidget *authWidget
     = new Wt::Auth::AuthWidget(UserAuth::auth(), m_pUserAuth->Users(), m_pUserAuth->login() );

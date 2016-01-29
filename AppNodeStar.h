@@ -36,6 +36,12 @@ private:
   pUserAuth_t m_pUserAuth;
   
   Server* m_pServer; // object managed by wt
+  dbo::Session m_Session;
+
+  
+  Wt::WTable* m_pTable;
+  
+  void HandleShowAddresses( const Wt::WMouseEvent& );
 
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );
