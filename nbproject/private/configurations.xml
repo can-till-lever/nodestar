@@ -29,8 +29,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" --docroot /var/www/wt</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" --docroot /var/www/wt --http-address 0.0.0.0 --http-port 8080</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" --docroot="/var/www/wt;/favicon.ico,/resources,/style" --http-address 0.0.0.0 --http-port 8080</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" --docroot /var/www/wt --http-address 0.0.0.0 --http-port 8080</runcommand>
+        <runcommand>"${OUTPUT_PATH}" --docroot="/var/www/wt;/favicon.ico,/resources,/style" --http-address 0.0.0.0 --http-port 8080</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

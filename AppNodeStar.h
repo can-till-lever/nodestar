@@ -26,8 +26,8 @@ public:
   AppNodeStar( const Wt::WEnvironment& );  // constructor as an application
   virtual ~AppNodeStar( void );
   
-  void initialize( void ); // Initializes the application, post-construction. 
-  void finalize( void );  // Finalizes the application, pre-destruction.
+  virtual void initialize( void ); // Initializes the application, post-construction. 
+  virtual void finalize( void );  // Finalizes the application, pre-destruction.
   
 protected:
 private:

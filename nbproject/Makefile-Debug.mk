@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/e82ab63d/AppAuth.o \
 	${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o \
 	${OBJECTDIR}/_ext/e82ab63d/Server.o \
+	${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o \
 	${OBJECTDIR}/_ext/400e14d7/DbRecUser.o \
 	${OBJECTDIR}/_ext/400e14d7/UserAuth.o \
 	${OBJECTDIR}/Cidr.o \
@@ -85,6 +86,11 @@ ${OBJECTDIR}/_ext/e82ab63d/Server.o: /home/sysadmin/projects/nodestar/Server.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/Server.o /home/sysadmin/projects/nodestar/Server.cpp
+
+${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o: /home/sysadmin/projects/nodestar/WCAdmin.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o /home/sysadmin/projects/nodestar/WCAdmin.cpp
 
 ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7

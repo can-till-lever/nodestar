@@ -34,6 +34,8 @@
 #include "AppNodeStar.h"
 #include "AppAuth.h"
 
+// http://www.postgresql.org/docs/current/static/functions-net.html
+
 namespace dbo = Wt::Dbo;
 
 /*
@@ -73,8 +75,7 @@ struct InsertNetwork {
     : session( session_ ), ptrOrganization( ptrOrganization_ ) {};
   ~InsertNetwork( void ) {
     }
-    
-  
+      
   // http://stackoverflow.com/questions/313970/c-stdstring-to-lower-case
   
   void operator()( const std::string& sNetwork, const std::string& sName, const std::string& sComment, const  std::string& sSource ) {
@@ -260,8 +261,6 @@ void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
     session.createTables();
     
     // populate auth table with default admin
-  
-    
     
 //    {  // initialize tables for user authentication/authorization functions
 //      typedef boost::shared_ptr<UserAuth> pUserAuth_t;
@@ -291,9 +290,9 @@ void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) 
   
   try {
     
-    InitializeTables( pool );
+    //InitializeTables( pool );
     
-    PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
+    //PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
     
     Server server(pool, argv[0]);
     

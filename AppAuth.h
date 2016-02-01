@@ -23,8 +23,8 @@ public:
   AppAuth( const Wt::WEnvironment& );
   virtual ~AppAuth();
   
-  void initialize( void ); // Initializes the application, post-construction. 
-  void finalize( void );  // Finalizes the application, pre-destruction.
+  virtual void initialize( void ); // Initializes the application, post-construction. 
+  virtual void finalize( void );  // Finalizes the application, pre-destruction.
   
 protected:
 private:

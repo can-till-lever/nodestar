@@ -43,7 +43,6 @@ AppAuth::AppAuth( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pSer
 AppAuth::~AppAuth() {
 }
 
-
 void AppAuth::initialize() {
 }
 

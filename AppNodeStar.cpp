@@ -15,6 +15,8 @@
 #include <Wt/WTable>
 #include <Wt/WPushButton>
 #include <Wt/WLineEdit>
+#include <Wt/WAnchor>
+#include <Wt/WLink>
 
 #include <Wt/Auth/AuthWidget>
 #include <Wt/Auth/PasswordService>
@@ -36,17 +38,27 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   m_pServer = dynamic_cast<Server*>( env.server() );
   m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
   
-  setTitle( "NodeStar: Network Infrastructure Data Management" );
-  //root()->addWidget( new Wt::WText( "More to Come" ) );
+  std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
+  setTitle( sTitle );
+  Wt::WText* pText( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
   
+  root()->addWidget( pText );
+
   m_Session.setConnectionPool( m_pServer->GetConnectionPool() );
   
   m_Session.mapClass<DbRecOrganization>( "organization" );
   m_Session.mapClass<DbRecIpAddress>( "ipaddress" ); 
   
+  internalPathChanged().connect( this, &AppNodeStar::HandleInternalPathChanged );
+  internalPathInvalid().connect( this, &AppNodeStar::HandleInternalPathInvalid );
+  
+//  Wt::WLink link( Wt::WLink::InternalPath, "/link1" );
+//  Wt::WAnchor* pAnchor = new Wt::WAnchor( link, "Test Link" );
+//  root()->addWidget( pAnchor );
+  
   Wt::WPushButton* p = new Wt::WPushButton( "select" );
-  root()->addWidget( p );
   p->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
+  root()->addWidget( p );
   
   m_pTable = new Wt::WTable( root() );
   root()->addWidget( m_pTable );
@@ -117,8 +129,11 @@ void AppNodeStar::initialize() {
 void AppNodeStar::finalize() {
 }
 
-/*
-  
+void AppNodeStar::HandleInternalPathChanged( const std::string& s ) {
+  std::cout << "HandleInternalPathChanged: " << s << std::endl;
+}
 
-  }
- *  */
+void AppNodeStar::HandleInternalPathInvalid( const std::string& s ) {
+  std::cout << "HandleInternalPathInvalid: " << s << std::endl;
+}
+  

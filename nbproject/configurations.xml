@@ -16,6 +16,7 @@
       <itemPath>/home/sysadmin/projects/nodestar/Server.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.h</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/WCAdmin.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -35,6 +36,7 @@
       <itemPath>utility/PopulateBasicIpAddresses.cpp</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/Server.cpp</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.cpp</itemPath>
+      <itemPath>/home/sysadmin/projects/nodestar/WCAdmin.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -98,6 +100,16 @@
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/Server.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/WCAdmin.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/WCAdmin.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -200,6 +212,16 @@
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/Server.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/WCAdmin.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/sysadmin/projects/nodestar/WCAdmin.h"
             ex="false"
             tool="3"
             flavor2="0">
