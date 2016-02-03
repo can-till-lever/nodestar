@@ -1,27 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   WCAdmin.h
- * Author: sysadmin
+ * Author: Raymond Burkholder
+ *         raymond@burkholder.net
  *
  * Created on February 1, 2016, 4:08 PM
  */
 
-#ifndef WCADMIN_H
-#define WCADMIN_H
+#pragma once
 
-class WCAdmin {
+#include <Wt/WContainerWidget>
+
+class WCAdmin: public Wt::WContainerWidget {
 public:
-  WCAdmin();
-  WCAdmin(const WCAdmin& orig);
+  WCAdmin( Wt::WContainerWidget *parent=0 );
   virtual ~WCAdmin();
+protected:
 private:
 
 };
-
-#endif /* WCADMIN_H */
-

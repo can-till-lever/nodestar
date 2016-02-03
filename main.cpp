@@ -6,6 +6,9 @@
  * Created on September 17, 2014, 1:25 PM
  */
 
+// helpful tutorials: http://www.webtoolkit.eu/widgets
+// wt redmine: http://redmine.webtoolkit.eu/projects/wt
+
 #include <iostream>
 #include <string>
 #include <vector>

@@ -52,8 +52,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-m64
+CXXFLAGS=-m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -75,57 +75,57 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/e82ab63d/AppAuth.o: /home/sysadmin/projects/nodestar/AppAuth.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppAuth.o /home/sysadmin/projects/nodestar/AppAuth.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppAuth.o /home/sysadmin/projects/nodestar/AppAuth.cpp
 
 ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
 
 ${OBJECTDIR}/_ext/e82ab63d/Server.o: /home/sysadmin/projects/nodestar/Server.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/Server.o /home/sysadmin/projects/nodestar/Server.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/Server.o /home/sysadmin/projects/nodestar/Server.cpp
 
 ${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o: /home/sysadmin/projects/nodestar/WCAdmin.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o /home/sysadmin/projects/nodestar/WCAdmin.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o /home/sysadmin/projects/nodestar/WCAdmin.cpp
 
 ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
 
 ${OBJECTDIR}/_ext/400e14d7/UserAuth.o: /home/sysadmin/projects/nodestar/model/UserAuth.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/UserAuth.o /home/sysadmin/projects/nodestar/model/UserAuth.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/UserAuth.o /home/sysadmin/projects/nodestar/model/UserAuth.cpp
 
 ${OBJECTDIR}/Cidr.o: Cidr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cidr.o Cidr.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cidr.o Cidr.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/utility/ImportNetworkCsv.o: utility/ImportNetworkCsv.cpp 
 	${MKDIR} -p ${OBJECTDIR}/utility
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportNetworkCsv.o utility/ImportNetworkCsv.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportNetworkCsv.o utility/ImportNetworkCsv.cpp
 
 ${OBJECTDIR}/utility/ImportSmcXml.o: utility/ImportSmcXml.cpp 
 	${MKDIR} -p ${OBJECTDIR}/utility
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportSmcXml.o utility/ImportSmcXml.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/ImportSmcXml.o utility/ImportSmcXml.cpp
 
 ${OBJECTDIR}/utility/PopulateBasicIpAddresses.o: utility/PopulateBasicIpAddresses.cpp 
 	${MKDIR} -p ${OBJECTDIR}/utility
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/PopulateBasicIpAddresses.o utility/PopulateBasicIpAddresses.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utility/PopulateBasicIpAddresses.o utility/PopulateBasicIpAddresses.cpp
 
 # Subprojects
 .build-subprojects:

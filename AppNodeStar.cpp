@@ -24,6 +24,7 @@
 #include "model/DbRecOrganization.h"
 #include "model/DbRecIpAddress.h"
 
+#include "WCAdmin.h"
 #include "AppNodeStar.h"
 
 namespace {
@@ -40,7 +41,7 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   
   std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
   setTitle( sTitle );
-  Wt::WText* pText( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
+  auto pText( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
   
   root()->addWidget( pText );
 
@@ -55,6 +56,12 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
 //  Wt::WLink link( Wt::WLink::InternalPath, "/link1" );
 //  Wt::WAnchor* pAnchor = new Wt::WAnchor( link, "Test Link" );
 //  root()->addWidget( pAnchor );
+  
+  //auto pTest = new Wt::WText( "<p>this is test</p>", root() );
+  auto pTest = new Wt::WText( "this is test", root() );
+  pTest->setStyleClass( "test" );
+  
+  WCAdmin* pWCAdmin = new WCAdmin( root() );
   
   Wt::WPushButton* p = new Wt::WPushButton( "select" );
   p->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
@@ -88,7 +95,7 @@ void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
       std::string prefix;
       boost::uuids::uuid id = iter->get()->uuidId;
       if ( !iter->get()->children.empty() ) {
-        if ( 0 != iter->get()->ptrParent ) {
+        if ( 0 != iter->get()->ptrParent.get() ) {
           boost::uuids::uuid parent = iter->get()->ptrParent->uuidId;
           mapParents_t::const_iterator iter = mapParents.find( parent );
           if ( mapParents.end() == iter )
@@ -101,7 +108,7 @@ void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
       }
       prefix = "";
       boost::uuids::uuid parent;
-      if ( 0 != iter->get()->ptrParent ) {
+      if ( 0 != iter->get()->ptrParent.get() ) {
         parent = iter->get()->ptrParent->uuidId;
         mapParents_t::const_iterator iter = mapParents.find( parent );
         if ( mapParents.end() == iter )
