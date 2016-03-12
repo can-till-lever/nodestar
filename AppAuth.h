@@ -10,10 +10,9 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <Wt/Dbo/ptr>
 #include <Wt/WApplication>
 
-#include "model/UserAuth.h"
+#include "Auth.h"
 
 #include "Server.h"
 
@@ -29,16 +28,14 @@ public:
 protected:
 private:
 
-  typedef boost::shared_ptr<UserAuth> pUserAuth_t;
-  pUserAuth_t m_pUserAuth;
-  
   Server* m_pServer; // object managed by wt
   
   dbo::Session m_Session;
+  
+  typedef boost::shared_ptr<Auth> pAuth_t;
+  pAuth_t m_pAuth;
 
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );
   
 };
-
-

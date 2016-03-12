@@ -185,16 +185,14 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
 
   try {
     
-    PopulateBasicIpAddresses( session );
-    
-    dbo::Transaction transaction( session );
-    
+    dbo::Transaction transaction( session );    
     DbRecOrganization* pqvsl 
             = new DbRecOrganization( "QVSL", "QuoVadis Services Ltd.", "Bermuda based hosting services",
                  "https://www.quovadisglobal.bm/en-GB/HostingSolutions.aspx", 19626 );
-    dbo::ptr<DbRecOrganization> ptrOrg = session.add( pqvsl );
-    
+    dbo::ptr<DbRecOrganization> ptrOrg = session.add( pqvsl );   
     transaction.commit();
+    
+    PopulateBasicIpAddresses( session );
     
   }
   catch ( dbo::Exception& e ) {
@@ -204,6 +202,18 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
     std::cout << "PopulateDatabase: errors 2" << std::endl;
   }
   
+    // ensure we have the default organization id (does it need to there now, or is it added later?)
+  // it is actually added above, so this code may not be required, but is here for future reference
+  ptrOrganization_t ptrQvsl;
+  try {
+    dbo::Transaction transaction( session );
+    ptrQvsl = session.find<DbRecOrganization>().where("idorganization=?").bind("QVSL");
+    transaction.commit();
+  }
+  catch ( dbo::Exception& e ) {
+    std::cout << "error 2 " << e.what() << std::endl;
+  }
+
   // need to do some error checking reqarding above before performing following
   
   // remove some old records, as they will be re-populated in the ipaddress table
@@ -221,22 +231,13 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
     std::cout << "error 4 " << e.what() << std::endl;
   }
   
-  // ensure we have the default organization id (does it need to there now, or is it added later?)
-  ptrOrganization_t ptrQvsl;
-  try {
-    dbo::Transaction transaction( session );
-    ptrQvsl = session.find<DbRecOrganization>().where("idorganization=?").bind("QVSL");
-    transaction.commit();
-  }
-  catch ( dbo::Exception& e ) {
-    std::cout << "error 2 " << e.what() << std::endl;
-  }
-   
+  // put this under separate menu
+  // also test for existance of file prior to attempting to import
   try {
     //dbo::Transaction transaction( session );
     InsertNetwork net( session, ptrQvsl );  // prep for insertions (first insertion wins, import order is important)
-    ImportNetworkCsvFile( net ); // data from mysql tables
-    ImportSmcXml( net );  // data from main smc
+//    ImportNetworkCsvFile( net ); // data from mysql tables
+//    ImportSmcXml( net );  // data from main smc
     net.Finish();  // 
     //transaction.commit();
   }
@@ -260,21 +261,22 @@ void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
     MapClasses( session );
     UserAuth::MapClasses( session );
 
+    // need to split this out and conditionally drop tables, only if they exist.
     session.dropTables();  // for testing
+    
     session.createTables();
     
     // populate auth table with default admin
     
-//    {  // initialize tables for user authentication/authorization functions
-//      typedef boost::shared_ptr<UserAuth> pUserAuth_t;
-//      pUserAuth_t pUserAuth;
-//      pUserAuth.reset( new UserAuth( pool ) );
-//      pUserAuth
-      //pUserAuth->InitializeTables();
-//    }
+    {  // initialize tables for user authentication/authorization functions
+      typedef boost::shared_ptr<UserAuth> pUserAuth_t;
+      pUserAuth_t pUserAuth;
+      pUserAuth.reset( new UserAuth( pool ) );
+      pUserAuth->InitializeTables();
+    }
   }
   catch ( Wt::Dbo::Exception& e ) {
-    std::cout << "InitializeTables Errors: " << e.what() << std::endl;
+    std::cout << "InitializeTables Error: " << e.what() << std::endl;
     throw;
   }
   
@@ -293,9 +295,9 @@ void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) 
   
   try {
     
-    //InitializeTables( pool );
+    InitializeTables( pool );
     
-    //PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
+    PopulateDatabase( pool );  // turn on when new file available, but convert to gui import function at some point
     
     Server server(pool, argv[0]);
     

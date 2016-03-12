@@ -1,3 +1,10 @@
+2016/03/11
+todo:
+  merge the two apps:  authinfo, authnodestar.  auth should be part of nodestar
+  use a hash or map to match urls against method to call (use a signal for the call)
+  add/remove the entries based upon auth levels of the user
+    for now (('logged in' and 'not logged in')
+
 wt points of interest:
 wt uses opengl libraries
 WT_CPP_11_MODE=-std=c++0x

@@ -8,36 +8,24 @@
 
 #include <Wt/WEnvironment>
 
-#include <Wt/WContainerWidget>
 #include <Wt/Auth/AuthWidget>
-#include <Wt/Auth/PasswordService>
+#include <Wt/WContainerWidget>
 
 #include "AppAuth.h"
 
 AppAuth::AppAuth( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ) {
   
   m_pServer = dynamic_cast<Server*>( env.server() );
-  m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
-  
   m_Session.setConnectionPool( m_pServer->GetConnectionPool() );
     
   setTitle( "NodeStar: Network Infrastructure Data Management" );
  
-  m_pUserAuth->login().changed().connect( m_pUserAuth.get(), &UserAuth::authEvent );
-
   //useStyleSheet("css/style.css");
 
-  Wt::Auth::AuthWidget *authWidget
-    = new Wt::Auth::AuthWidget(UserAuth::auth(), m_pUserAuth->Users(), m_pUserAuth->login() );
-
-  authWidget->model()->addPasswordAuth(&UserAuth::passwordAuth());
-  authWidget->model()->addOAuth(UserAuth::oAuth());
-  authWidget->setRegistrationEnabled(true);
-
-  authWidget->processEnvironment();
-
-  root()->addWidget(authWidget);  
-
+  m_pAuth.reset( new Auth( m_pServer->GetConnectionPool() ) );
+  
+  root()->addWidget( m_pAuth->NewAuthWidget() );  
+  
 }
 
 AppAuth::~AppAuth() {
