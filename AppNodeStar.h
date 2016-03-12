@@ -12,10 +12,14 @@
 
 #pragma once
 
+#include <map>
+
 #include <boost/shared_ptr.hpp>
+#include <boost/signals2.hpp>
 
 #include <Wt/Dbo/ptr>
 #include <Wt/WApplication>
+#include <Wt/WContainerWidget>
 
 #include "model/UserAuth.h"
 
@@ -23,8 +27,15 @@
 
 class AppNodeStar: public Wt::WApplication {
 public:
+  
+  typedef boost::signals2::signal<void (Wt::WContainerWidget*)> signalInternalPathChanged_t;
+  typedef signalInternalPathChanged_t::slot_type slotInternalPathChanged_t;
+  
   AppNodeStar( const Wt::WEnvironment& );  // constructor as an application
   virtual ~AppNodeStar( void );
+  
+  void RegisterPath( const std::string& sPath, const slotInternalPathChanged_t& slot );
+  void UnRegisterPath( const std::string& sPath );
   
   virtual void initialize( void ); // Initializes the application, post-construction. 
   virtual void finalize( void );  // Finalizes the application, pre-destruction.
@@ -38,6 +49,8 @@ private:
   Server* m_pServer; // object managed by wt
   dbo::Session m_Session;
 
+  typedef std::map<const std::string, const slotInternalPathChanged_t> mapInternalPathChanged_t;
+  mapInternalPathChanged_t m_mapInternalPathChanged;
   
   Wt::WTable* m_pTable;
   

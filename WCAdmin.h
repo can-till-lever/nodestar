@@ -16,5 +16,5 @@ public:
   virtual ~WCAdmin();
 protected:
 private:
-
+  void AddLink( const std::string& sClass, const std::string& sPath, const std::string& sAnchor );
 };
