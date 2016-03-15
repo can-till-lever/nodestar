@@ -36,7 +36,7 @@ namespace {
 typedef dbo::ptr<DbRecOrganization> ptrOrganization_t;
 typedef dbo::ptr<DbRecIpAddress> ptrIpAddress_t;
 
-AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ), m_pTable( 0 ) {
+AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ) {
   
   m_pServer = dynamic_cast<Server*>( env.server() );
   //m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
@@ -65,37 +65,16 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   
   m_pAuth.reset( new Auth( m_pServer->GetConnectionPool() ) );
   
-  // <a id="ov7qcp1" 
-  //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
-  //    class="Wt-rr"><span id="ov7qcp0">Populate Tables: MySQL sourced</span>
-  //    </a>
-  auto pcw = new Wt::WContainerWidget( root() );
-  pcw->setList(true); // ==> sub WContainerWidget added as <li> elements
-  AddLink( pcw, "admin", "/auth/login", "Login" );
-  AddLink( pcw, "admin", "/admin/tables/init", "Init Tables" );
-  AddLink( pcw, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
-  AddLink( pcw, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
-  AddLink( pcw, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
   
-  namespace args = boost::phoenix::arg_names;
-  RegisterPath( "/auth/login", boost::phoenix::bind( &AppNodeStar::ShowLogIn, this, args::arg1 ) );
-  
-  Wt::WPushButton* p = new Wt::WPushButton( "Show Addresses" );
-  p->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
-  root()->addWidget( p );
-  
-  m_pTable = new Wt::WTable( root() );
-  root()->addWidget( m_pTable );
-  
+  ShowDefault( root() );
 }
 
 AppNodeStar::~AppNodeStar() {
 }
 
-void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
+void AppNodeStar::ShowAddresses( Wt::WContainerWidget* pcw ) {
   
-  
-  m_pTable->clear();
+  auto pTable = new Wt::WTable( pcw );
   
   int iRow( 0 );
   
@@ -135,9 +114,9 @@ void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
       }
       std::stringstream ss;
       ss << iter->get()->cidrIpAddress;
-      m_pTable->elementAt( iRow, 0 )->addWidget( new Wt::WText( prefix + ss.str() ) );
-      m_pTable->elementAt( iRow, 1 )->addWidget( new Wt::WText( iter->get()->sName ) );
-      m_pTable->elementAt( iRow, 2 )->addWidget( new Wt::WText( iter->get()->sDescription ) );
+      pTable->elementAt( iRow, 0 )->addWidget( new Wt::WText( prefix + ss.str() ) );
+      pTable->elementAt( iRow, 1 )->addWidget( new Wt::WText( iter->get()->sName ) );
+      pTable->elementAt( iRow, 2 )->addWidget( new Wt::WText( iter->get()->sDescription ) );
       ++iRow;
     }
     transaction.commit();  
@@ -145,6 +124,14 @@ void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
   catch ( dbo::Exception& e ) {
     std::cout << "AppNodeStar error " << e.what() << std::endl;
   }
+  
+}
+
+void AppNodeStar::HandleShowAddresses( const Wt::WMouseEvent& event ) {
+  root()->clear();
+  this->setInternalPath( "/show/addresses", false );
+  ShowMainMenu( root() );
+  ShowAddresses( root() );  
 }
 
 void AppNodeStar::initialize() {
@@ -162,6 +149,7 @@ void AppNodeStar::HandleInternalPathChanged( const std::string& sPath ) {
   }
   else {
     // default home page, or error page, and register a default page
+    ShowDefault( root() );
   }
 }
 
@@ -188,7 +176,45 @@ void AppNodeStar::AddLink( Wt::WContainerWidget* pcw, const std::string& sClass,
   Wt::WAnchor* pAnchor = new Wt::WAnchor( link, sAnchor, pContainer );
 }
 
-void AppNodeStar::ShowLogIn( Wt::WContainerWidget* pcw ) {
+void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
+  ShowMainMenu( pcw );
   // need to register this, or put in menu somewhere, so can call on demand
-  pcw->addWidget( m_pAuth->NewAuthWidget() ); 
+  pcw->addWidget( m_pAuth->NewAuthWidget() );  // stateful show of: login, register, logged in
+}
+
+void AppNodeStar::ShowDefault( Wt::WContainerWidget* pcw ) {
+  ShowMainMenu( pcw );
+}
+
+void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
+  
+  namespace args = boost::phoenix::arg_names;
+  
+  AddLink( pcw, "admin", "/", "Home" );
+  RegisterPath( "/", boost::phoenix::bind( &AppNodeStar::ShowDefault, this, args::arg1 ) );
+
+  AddLink( pcw, "admin", "/auth/signin", "Sign In" );
+  RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::ShowSignIn, this, args::arg1 ) );
+  
+  AddLink( pcw, "admin", "/show/addresses", "Address List" );
+  RegisterPath( "/show/addresses", boost::phoenix::bind( &AppNodeStar::ShowAddresses, this, args::arg1 ) );
+  
+  if ( m_pAuth->LoggedIn() ) {
+    // <a id="ov7qcp1" 
+    //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
+    //    class="Wt-rr"><span id="ov7qcp0">Populate Tables: MySQL sourced</span>
+    //    </a>
+    auto pMenu = new Wt::WContainerWidget( pcw );
+    pMenu->setList(true); // ==> sub WContainerWidget added as <li> elements
+    AddLink( pMenu, "admin", "/admin/tables/init", "Init Tables" );
+    AddLink( pMenu, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
+    AddLink( pMenu, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
+    AddLink( pMenu, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
+  }
+  
+  // sample button code, but now implemented as a link
+  //Wt::WPushButton* pBtn = new Wt::WPushButton( "Show Addresses" );
+  //pBtn->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
+  //pcw->addWidget( pBtn );
+  
 }

@@ -58,11 +58,14 @@ private:
   typedef std::map<const std::string, const slotInternalPathChanged_t> mapInternalPathChanged_t;
   mapInternalPathChanged_t m_mapInternalPathChanged;
   
-  Wt::WTable* m_pTable;
-  
   void AddLink( Wt::WContainerWidget*, const std::string& sClass, const std::string& sPath, const std::string& sAnchor );
 
-  void ShowLogIn( Wt::WContainerWidget* );
+  void ShowMainMenu( Wt::WContainerWidget* );
+  
+  void ShowDefault( Wt::WContainerWidget* );
+  void ShowSignIn( Wt::WContainerWidget* );
+  
+  void ShowAddresses( Wt::WContainerWidget* );
   
   void HandleShowAddresses( const Wt::WMouseEvent& );
 

@@ -19,6 +19,7 @@ public:
   Auth( dbo::FixedSqlConnectionPool& pool );
   virtual ~Auth();
   Wt::Auth::AuthWidget* NewAuthWidget( void );
+  bool LoggedIn( void ) const { return m_pUserAuth->login().loggedIn(); };
 protected:
 private:
   typedef boost::shared_ptr<UserAuth> pUserAuth_t;

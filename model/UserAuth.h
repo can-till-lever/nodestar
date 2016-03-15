@@ -36,15 +36,15 @@ public:
   
   static void configureAuth();
   
-  Wt::Auth::Login& login() { return m_login; }
+  Wt::Auth::Login& login() { return m_SignIn; }
   
   static const Wt::Auth::AuthService& auth();
   static const Wt::Auth::PasswordService& passwordAuth();
   static const std::vector<const Wt::Auth::OAuthService *>& oAuth();
   
   void authEvent() {
-    if ( m_login.loggedIn() )
-      Wt::log("notice") << "User " << m_login.user().id()
+    if ( m_SignIn.loggedIn() )
+      Wt::log("notice") << "User " << m_SignIn.user().id()
 			<< " logged in.";
     else
       Wt::log("notice") << "User logged out.";
@@ -55,12 +55,12 @@ private:
 
   dbo::ptr<DbRecUser> user() const;  // does this belong here?
   
-  dbo::Session m_session;  // needs to be adjusted to use ConnectionPool
+  dbo::Session m_session;
   UserDatabase* m_users;
   
-  Wt::Auth::Login m_login;
+  Wt::Auth::Login m_SignIn;
   
-  void CreateTables( void );  // should now be obsolete
+  void CreateTables( void );  // should now be obsolete, need to check if called
 
 };
 

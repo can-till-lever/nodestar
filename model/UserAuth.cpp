@@ -76,8 +76,8 @@ void UserAuth::InitializeTables( void ) {
 }
 
 dbo::ptr<DbRecUser> UserAuth::user() const {
-  if (m_login.loggedIn()) {
-    dbo::ptr<AuthInfoTables> authInfo = m_users->find( m_login.user() );
+  if (m_SignIn.loggedIn()) {
+    dbo::ptr<AuthInfoTables> authInfo = m_users->find( m_SignIn.user() );
     return authInfo->user();
   } 
   else
@@ -107,10 +107,6 @@ void UserAuth::configureAuth() {
 Wt::Auth::AbstractUserDatabase& UserAuth::Users() {
   return *m_users;
 }
-
-//UserDatabase* UserAuth::Users() {
-//  return m_users;
-//}
 
 const Wt::Auth::AuthService& UserAuth::auth() {
   return myAuthService;
