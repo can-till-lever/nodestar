@@ -21,7 +21,9 @@
 #include <Wt/WApplication>
 #include <Wt/WContainerWidget>
 
-#include "model/UserAuth.h"
+//#include "model/UserAuth.h"
+
+#include "Auth.h"
 
 #include "Server.h"
 
@@ -43,8 +45,12 @@ public:
 protected:
 private:
   
-  typedef boost::shared_ptr<UserAuth> pUserAuth_t;
-  pUserAuth_t m_pUserAuth;
+  // old style
+  //typedef boost::shared_ptr<UserAuth> pUserAuth_t;
+  //pUserAuth_t m_pUserAuth;  
+  // new style
+  typedef boost::shared_ptr<Auth> pAuth_t;
+  pAuth_t m_pAuth;
   
   Server* m_pServer; // object managed by wt
   dbo::Session m_Session;
@@ -53,6 +59,10 @@ private:
   mapInternalPathChanged_t m_mapInternalPathChanged;
   
   Wt::WTable* m_pTable;
+  
+  void AddLink( Wt::WContainerWidget*, const std::string& sClass, const std::string& sPath, const std::string& sAnchor );
+
+  void ShowLogIn( Wt::WContainerWidget* );
   
   void HandleShowAddresses( const Wt::WMouseEvent& );
 

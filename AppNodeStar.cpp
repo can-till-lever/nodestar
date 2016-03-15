@@ -9,6 +9,9 @@
 #include <sstream>
 #include <map>
 
+#include <boost/phoenix/bind/bind_member_function.hpp>
+#include <boost/phoenix/core/argument.hpp>
+
 #include <Wt/WEnvironment>
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
@@ -24,7 +27,6 @@
 #include "model/DbRecOrganization.h"
 #include "model/DbRecIpAddress.h"
 
-#include "WCAdmin.h"
 #include "AppNodeStar.h"
 
 namespace {
@@ -37,13 +39,13 @@ typedef dbo::ptr<DbRecIpAddress> ptrIpAddress_t;
 AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env ), m_pServer( 0 ), m_pTable( 0 ) {
   
   m_pServer = dynamic_cast<Server*>( env.server() );
-  m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
+  //m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
   
   std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
   setTitle( sTitle );
-  auto pText( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
+  auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
   
-  root()->addWidget( pText );
+  root()->addWidget( pTitle );
 
   m_Session.setConnectionPool( m_pServer->GetConnectionPool() );
   
@@ -58,12 +60,27 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
 //  root()->addWidget( pAnchor );
   
   //auto pTest = new Wt::WText( "<p>this is test</p>", root() );
-  auto pTest = new Wt::WText( "this is test", root() );
-  pTest->setStyleClass( "test" );
+  //auto pTest = new Wt::WText( "this is test", root() );
+  //pTest->setStyleClass( "test" );
   
-  WCAdmin* pWCAdmin = new WCAdmin( root() );
+  m_pAuth.reset( new Auth( m_pServer->GetConnectionPool() ) );
   
-  Wt::WPushButton* p = new Wt::WPushButton( "select" );
+  // <a id="ov7qcp1" 
+  //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
+  //    class="Wt-rr"><span id="ov7qcp0">Populate Tables: MySQL sourced</span>
+  //    </a>
+  auto pcw = new Wt::WContainerWidget( root() );
+  pcw->setList(true); // ==> sub WContainerWidget added as <li> elements
+  AddLink( pcw, "admin", "/auth/login", "Login" );
+  AddLink( pcw, "admin", "/admin/tables/init", "Init Tables" );
+  AddLink( pcw, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
+  AddLink( pcw, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
+  AddLink( pcw, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
+  
+  namespace args = boost::phoenix::arg_names;
+  RegisterPath( "/auth/login", boost::phoenix::bind( &AppNodeStar::ShowLogIn, this, args::arg1 ) );
+  
+  Wt::WPushButton* p = new Wt::WPushButton( "Show Addresses" );
   p->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
   root()->addWidget( p );
   
@@ -137,10 +154,14 @@ void AppNodeStar::finalize() {
 }
 
 void AppNodeStar::HandleInternalPathChanged( const std::string& sPath ) {
+  root()->clear();
   std::cout << "HandleInternalPathChanged: " << sPath << std::endl;
   mapInternalPathChanged_t::const_iterator iter = m_mapInternalPathChanged.find( sPath );
   if ( m_mapInternalPathChanged.end() != iter ) {
     iter->second( root() );
+  }
+  else {
+    // default home page, or error page, and register a default page
   }
 }
 
@@ -160,3 +181,14 @@ void AppNodeStar::UnRegisterPath( const std::string& sPath ) {
   m_mapInternalPathChanged.erase( iter );
 }
 
+void AppNodeStar::AddLink( Wt::WContainerWidget* pcw, const std::string& sClass, const std::string& sPath, const std::string& sAnchor ) {
+  auto pContainer = new Wt::WContainerWidget( pcw );
+  pContainer->setStyleClass( sClass );
+  Wt::WLink link( Wt::WLink::InternalPath, sPath );
+  Wt::WAnchor* pAnchor = new Wt::WAnchor( link, sAnchor, pContainer );
+}
+
+void AppNodeStar::ShowLogIn( Wt::WContainerWidget* pcw ) {
+  // need to register this, or put in menu somewhere, so can call on demand
+  pcw->addWidget( m_pAuth->NewAuthWidget() ); 
+}

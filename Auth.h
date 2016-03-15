@@ -12,8 +12,6 @@
 
 #include <Wt/Dbo/ptr>
 
-//#include <Wt/WContainerWidget>
-
 #include "model/UserAuth.h"
 
 class Auth {
