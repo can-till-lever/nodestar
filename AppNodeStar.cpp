@@ -27,6 +27,8 @@
 #include "model/DbRecOrganization.h"
 #include "model/DbRecIpAddress.h"
 
+#include "page/Upload.h"
+
 #include "AppNodeStar.h"
 
 namespace {
@@ -41,9 +43,14 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   m_pServer = dynamic_cast<Server*>( env.server() );
   //m_pUserAuth.reset( new UserAuth( m_pServer->GetConnectionPool() ) );
   
+  //useStyleSheet(Wt::WLink("/css/nodestar.css"));
+  //useStyleSheet("css/nodestar.css");
+  useStyleSheet("style/nodestar.css");
+  
   std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
   setTitle( sTitle );
   auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
+  pTitle->setStyleClass( "MainTitle" );
   
   root()->addWidget( pTitle );
 
@@ -199,6 +206,9 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   AddLink( pcw, "admin", "/show/addresses", "Address List" );
   RegisterPath( "/show/addresses", boost::phoenix::bind( &AppNodeStar::ShowAddresses, this, args::arg1 ) );
   
+  AddLink( pcw, "admin", "/admin/tables/upload", "Upload" );
+  RegisterPath( "/admin/tables/upload", boost::phoenix::bind( &AppNodeStar::Upload, this, args::arg1 ) );
+  
   if ( m_pAuth->LoggedIn() ) {
     // <a id="ov7qcp1" 
     //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
@@ -208,7 +218,9 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
     pMenu->setList(true); // ==> sub WContainerWidget added as <li> elements
     AddLink( pMenu, "admin", "/admin/tables/init", "Init Tables" );
     AddLink( pMenu, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
+    // use the Upload class to do this one:
     AddLink( pMenu, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
+    // use the Upload class to do this one:
     AddLink( pMenu, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
   }
   
@@ -216,5 +228,10 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   //Wt::WPushButton* pBtn = new Wt::WPushButton( "Show Addresses" );
   //pBtn->clicked().connect(this, &AppNodeStar::HandleShowAddresses );
   //pcw->addWidget( pBtn );
+  
+}
+
+void AppNodeStar::Upload( Wt::WContainerWidget* pcw ) {
+  ::Upload* upload( new ::Upload( pcw ) );
   
 }

@@ -2,17 +2,22 @@
 todo:
   maintain state for login/logout menus/buttons
   maintain tables in admin mode
+  now can work on menu based db manipulation, rather than hard coding init
+  need to work on page layout via css
+  some stuff on front page (what?) or everything behind sign-in?
+  do some snmp probing via mibs
 
 2016/03/11
 todo:
   add/remove the entries based upon auth levels of the user
     for now (('logged in' and 'not logged in')
+  implement groups at some point
 
 wt points of interest:
 wt uses opengl libraries
-WT_CPP_11_MODE=-std=c++0x
+WT_CPP_11_MODE=-std=c++0x  [0x, 11, 14 are available in current netbeans menu]
 
-NetBeans:
+NetBeans: may or may not need:
 sudo apt-get update
 sudo apt-get install openjdk-7-jdk
 sudo update-alternatives --config java

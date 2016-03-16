@@ -21,7 +21,9 @@
 #include <Wt/WApplication>
 #include <Wt/WContainerWidget>
 
-//#include "model/UserAuth.h"
+// requires style/nodestar.css
+// ln -s style /var/www/wt/style
+// style also needs to be in --doc-root, which is a source of static files
 
 #include "Auth.h"
 
@@ -66,6 +68,8 @@ private:
   void ShowSignIn( Wt::WContainerWidget* );
   
   void ShowAddresses( Wt::WContainerWidget* );
+  
+  void Upload( Wt::WContainerWidget* );
   
   void HandleShowAddresses( const Wt::WMouseEvent& );
 
