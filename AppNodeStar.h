@@ -67,11 +67,9 @@ private:
   void ShowDefault( Wt::WContainerWidget* );
   void ShowSignIn( Wt::WContainerWidget* );
   
-  void ShowAddresses( Wt::WContainerWidget* );
-  
   void Upload( Wt::WContainerWidget* );
   
-  void HandleShowAddresses( const Wt::WMouseEvent& );
+  void ShowAddresses( Wt::WContainerWidget* pcw );
 
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );

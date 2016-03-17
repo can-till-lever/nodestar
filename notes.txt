@@ -6,6 +6,19 @@ todo:
   need to work on page layout via css
   some stuff on front page (what?) or everything behind sign-in?
   do some snmp probing via mibs
+  need to build common page elements: inherit as a class, or call a method?
+  re-factor the default organization to something else:
+    hard-coded, or text-file based, or manually entered
+  need mechanism to rebuild/modify tables as schema changes
+  .. export and then reload tables .. need to set defaults appropriately
+  .. use pgadmin to change tables live?
+  automate or match schema changes (inline code vs manual mods needs to be synced)
+
+  drop tables, only if exist, so menu only if tables exist
+  add tables, only if don't exist, so menu only if tables don't exist
+  need mechanism to diff schema in db vs what is in code
+
+states:  
 
 2016/03/11
 todo:

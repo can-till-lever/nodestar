@@ -6,8 +6,28 @@
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
-        <group name="nodestar"/>
-        <group name="Group obio nodestar"/>
+        <group>
+            <file>file:/home/sysadmin/projects/nodestar/page/Upload.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/AppNodeStar.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/Server.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/model/UserAuth.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/ShowAddresses.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/main.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/model/UserAuth.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/SqlTraits.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/README.md</file>
+            <file>file:/home/sysadmin/projects/nodestar/model/DbRecOrganization.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/notes.txt</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/SignIn.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/ShowAddresses.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/Auth.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/Auth.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/Server.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/AppNodeStar.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/Upload.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/SignIn.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/style/nodestar.css</file>
+        </group>
     </open-files>
 </project-private>

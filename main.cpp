@@ -251,6 +251,7 @@ void PopulateDatabase( dbo::FixedSqlConnectionPool& pool ) {
 // in some cases, depending upon foreign constraints,
 //   can knock out one table, mapClass the one table to a session, drop it, and recreate it
 //   and leave the other tables intact
+// maintain code versions:  code segments to modify schema:  fields, records, foreign keys
 void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
   
   try {
@@ -287,9 +288,9 @@ Wt::WApplication* CreateAppNodeStar( const Wt::WEnvironment& env ) {
   return new AppNodeStar( env );
 }
 
-Wt::WApplication* CreateAppAuth( const Wt::WEnvironment& env ) {
-  return new AppAuth( env );
-}
+//Wt::WApplication* CreateAppAuth( const Wt::WEnvironment& env ) {
+//  return new AppAuth( env );
+//}
 
 void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) {
   
@@ -305,7 +306,7 @@ void StartAppManger( int argc, char** argv, dbo::FixedSqlConnectionPool& pool ) 
 
     server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
     server.addEntryPoint( Wt::Application, CreateAppNodeStar);
-    server.addEntryPoint( Wt::Application, CreateAppAuth, "/auth" );
+    //server.addEntryPoint( Wt::Application, CreateAppAuth, "/auth" );
     
     if (server.start()) {
       Wt::WServer::waitForShutdown();

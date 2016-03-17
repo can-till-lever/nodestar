@@ -35,14 +35,17 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/e82ab63d/AppAuth.o \
-	${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o \
-	${OBJECTDIR}/_ext/e82ab63d/Server.o \
-	${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o \
-	${OBJECTDIR}/_ext/400e14d7/DbRecUser.o \
-	${OBJECTDIR}/_ext/400e14d7/UserAuth.o \
+	${OBJECTDIR}/AppAuth.o \
+	${OBJECTDIR}/AppNodeStar.o \
+	${OBJECTDIR}/Auth.o \
 	${OBJECTDIR}/Cidr.o \
+	${OBJECTDIR}/Server.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/model/DbRecUser.o \
+	${OBJECTDIR}/model/UserAuth.o \
+	${OBJECTDIR}/page/ShowAddresses.o \
+	${OBJECTDIR}/page/SignIn.o \
+	${OBJECTDIR}/page/Upload.o \
 	${OBJECTDIR}/utility/ImportNetworkCsv.o \
 	${OBJECTDIR}/utility/ImportSmcXml.o \
 	${OBJECTDIR}/utility/PopulateBasicIpAddresses.o
@@ -62,7 +65,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/local/lib -lcidr -lwt -lwtdbo -lwtdbopostgres -lwthttp -lboost_system-gcc48-mt-1_58
+LDLIBSOPTIONS=-L/usr/local/lib -lcidr -lwt -lwtdbo -lwtdbopostgres -lwthttp -lboost_system-gcc53-mt-d-1_56
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -72,45 +75,60 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nodestar ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/e82ab63d/AppAuth.o: /home/sysadmin/projects/nodestar/AppAuth.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
+${OBJECTDIR}/AppAuth.o: AppAuth.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppAuth.o /home/sysadmin/projects/nodestar/AppAuth.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AppAuth.o AppAuth.cpp
 
-${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o: /home/sysadmin/projects/nodestar/AppNodeStar.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
+${OBJECTDIR}/AppNodeStar.o: AppNodeStar.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/AppNodeStar.o /home/sysadmin/projects/nodestar/AppNodeStar.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AppNodeStar.o AppNodeStar.cpp
 
-${OBJECTDIR}/_ext/e82ab63d/Server.o: /home/sysadmin/projects/nodestar/Server.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
+${OBJECTDIR}/Auth.o: Auth.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/Server.o /home/sysadmin/projects/nodestar/Server.cpp
-
-${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o: /home/sysadmin/projects/nodestar/WCAdmin.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/e82ab63d
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e82ab63d/WCAdmin.o /home/sysadmin/projects/nodestar/WCAdmin.cpp
-
-${OBJECTDIR}/_ext/400e14d7/DbRecUser.o: /home/sysadmin/projects/nodestar/model/DbRecUser.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/DbRecUser.o /home/sysadmin/projects/nodestar/model/DbRecUser.cpp
-
-${OBJECTDIR}/_ext/400e14d7/UserAuth.o: /home/sysadmin/projects/nodestar/model/UserAuth.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/400e14d7
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/400e14d7/UserAuth.o /home/sysadmin/projects/nodestar/model/UserAuth.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Auth.o Auth.cpp
 
 ${OBJECTDIR}/Cidr.o: Cidr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cidr.o Cidr.cpp
 
+${OBJECTDIR}/Server.o: Server.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Server.o Server.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/model/DbRecUser.o: model/DbRecUser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/DbRecUser.o model/DbRecUser.cpp
+
+${OBJECTDIR}/model/UserAuth.o: model/UserAuth.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/UserAuth.o model/UserAuth.cpp
+
+${OBJECTDIR}/page/ShowAddresses.o: page/ShowAddresses.cpp 
+	${MKDIR} -p ${OBJECTDIR}/page
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/page/ShowAddresses.o page/ShowAddresses.cpp
+
+${OBJECTDIR}/page/SignIn.o: page/SignIn.cpp 
+	${MKDIR} -p ${OBJECTDIR}/page
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/page/SignIn.o page/SignIn.cpp
+
+${OBJECTDIR}/page/Upload.o: page/Upload.cpp 
+	${MKDIR} -p ${OBJECTDIR}/page
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/page/Upload.o page/Upload.cpp
 
 ${OBJECTDIR}/utility/ImportNetworkCsv.o: utility/ImportNetworkCsv.cpp 
 	${MKDIR} -p ${OBJECTDIR}/utility

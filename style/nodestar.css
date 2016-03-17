@@ -15,3 +15,6 @@ body {
   text-align:center;
   float: top
 }
+
+// display: inline;   to get li stuff in a row  
+// display: inline-block;  to allow padding, border, margin

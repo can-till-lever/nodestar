@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>/home/sysadmin/projects/nodestar/AppAuth.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.h</itemPath>
+      <itemPath>Auth.h</itemPath>
       <itemPath>Cidr.hpp</itemPath>
       <itemPath>model/DbRecIpAddress.h</itemPath>
       <itemPath>model/DbRecOrganization.h</itemPath>
@@ -14,29 +15,35 @@
       <itemPath>utility/ImportSmcXml.h</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/Server.h</itemPath>
+      <itemPath>page/ShowAddresses.h</itemPath>
+      <itemPath>page/SignIn.h</itemPath>
       <itemPath>SqlTraits.h</itemPath>
+      <itemPath>page/Upload.h</itemPath>
       <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.h</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/WCAdmin.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
       <itemPath>README.md</itemPath>
+      <itemPath>style/nodestar.css</itemPath>
       <itemPath>notes.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>/home/sysadmin/projects/nodestar/AppAuth.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/AppNodeStar.cpp</itemPath>
+      <itemPath>AppAuth.cpp</itemPath>
+      <itemPath>AppNodeStar.cpp</itemPath>
+      <itemPath>Auth.cpp</itemPath>
       <itemPath>Cidr.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</itemPath>
+      <itemPath>model/DbRecUser.cpp</itemPath>
       <itemPath>utility/ImportNetworkCsv.cpp</itemPath>
       <itemPath>utility/ImportSmcXml.cpp</itemPath>
       <itemPath>utility/PopulateBasicIpAddresses.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/Server.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/model/UserAuth.cpp</itemPath>
-      <itemPath>/home/sysadmin/projects/nodestar/WCAdmin.cpp</itemPath>
+      <itemPath>Server.cpp</itemPath>
+      <itemPath>page/ShowAddresses.cpp</itemPath>
+      <itemPath>page/SignIn.cpp</itemPath>
+      <itemPath>page/Upload.cpp</itemPath>
+      <itemPath>model/UserAuth.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -74,23 +81,13 @@
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
             <linkerLibLibItem>wthttp</linkerLibLibItem>
-            <linkerLibLibItem>boost_system-gcc48-mt-1_58</linkerLibLibItem>
+            <linkerLibLibItem>boost_system-gcc53-mt-d-1_56</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/sysadmin/projects/nodestar/AppAuth.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/AppAuth.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
-            ex="false"
-            tool="1"
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/AppNodeStar.h"
@@ -98,29 +95,9 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/Server.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/WCAdmin.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/WCAdmin.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.cpp"
-            ex="false"
-            tool="1"
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.h"
@@ -128,21 +105,26 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/model/UserAuth.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="AppAuth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AppNodeStar.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Auth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Auth.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -152,7 +134,25 @@
       </item>
       <item path="model/DbRecOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="model/DbRecUser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/UserAuth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="notes.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/ShowAddresses.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/ShowAddresses.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/SignIn.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/SignIn.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/Upload.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/Upload.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="style/nodestar.css" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utility/ImportNetworkCsv.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -190,19 +190,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="/home/sysadmin/projects/nodestar/AppAuth.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/AppAuth.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/AppNodeStar.cpp"
-            ex="false"
-            tool="1"
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/AppNodeStar.h"
@@ -210,29 +200,9 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/Server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/Server.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/WCAdmin.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/WCAdmin.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.cpp"
-            ex="false"
-            tool="1"
             flavor2="0">
       </item>
       <item path="/home/sysadmin/projects/nodestar/model/DbRecUser.h"
@@ -240,21 +210,26 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/sysadmin/projects/nodestar/model/UserAuth.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="/home/sysadmin/projects/nodestar/model/UserAuth.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="AppAuth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AppNodeStar.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Auth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Auth.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Cidr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Cidr.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="SqlTraits.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -264,7 +239,25 @@
       </item>
       <item path="model/DbRecOrganization.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="model/DbRecUser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/UserAuth.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="notes.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/ShowAddresses.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/ShowAddresses.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/SignIn.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/SignIn.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="page/Upload.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="page/Upload.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="style/nodestar.css" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utility/ImportNetworkCsv.cpp" ex="false" tool="1" flavor2="0">
       </item>
