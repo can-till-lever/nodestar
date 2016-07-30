@@ -10,22 +10,23 @@
             <file>file:/home/sysadmin/projects/nodestar/page/Upload.h</file>
             <file>file:/home/sysadmin/projects/nodestar/AppNodeStar.h</file>
             <file>file:/home/sysadmin/projects/nodestar/model/DbRecUser.cpp</file>
-            <file>file:/home/sysadmin/projects/nodestar/Server.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/AppAuth.h</file>
             <file>file:/home/sysadmin/projects/nodestar/model/UserAuth.cpp</file>
             <file>file:/home/sysadmin/projects/nodestar/page/ShowAddresses.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/Server.cpp</file>
             <file>file:/home/sysadmin/projects/nodestar/main.cpp</file>
             <file>file:/home/sysadmin/projects/nodestar/model/UserAuth.h</file>
             <file>file:/home/sysadmin/projects/nodestar/SqlTraits.h</file>
             <file>file:/home/sysadmin/projects/nodestar/README.md</file>
             <file>file:/home/sysadmin/projects/nodestar/model/DbRecOrganization.h</file>
-            <file>file:/home/sysadmin/projects/nodestar/notes.txt</file>
             <file>file:/home/sysadmin/projects/nodestar/page/SignIn.cpp</file>
-            <file>file:/home/sysadmin/projects/nodestar/page/ShowAddresses.h</file>
+            <file>file:/home/sysadmin/projects/nodestar/notes.txt</file>
             <file>file:/home/sysadmin/projects/nodestar/Auth.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/page/ShowAddresses.h</file>
             <file>file:/home/sysadmin/projects/nodestar/Auth.h</file>
             <file>file:/home/sysadmin/projects/nodestar/Server.h</file>
-            <file>file:/home/sysadmin/projects/nodestar/AppNodeStar.cpp</file>
             <file>file:/home/sysadmin/projects/nodestar/page/Upload.cpp</file>
+            <file>file:/home/sysadmin/projects/nodestar/AppNodeStar.cpp</file>
             <file>file:/home/sysadmin/projects/nodestar/page/SignIn.h</file>
             <file>file:/home/sysadmin/projects/nodestar/style/nodestar.css</file>
         </group>

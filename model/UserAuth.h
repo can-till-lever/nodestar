@@ -42,6 +42,7 @@ public:
   static const Wt::Auth::PasswordService& passwordAuth();
   static const std::vector<const Wt::Auth::OAuthService *>& oAuth();
   
+  // ** linkAuthEvent ** in Auth.ccp
   void authEvent() {
     if ( m_SignIn.loggedIn() )
       Wt::log("notice") << "User " << m_SignIn.user().id()

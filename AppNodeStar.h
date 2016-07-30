@@ -66,6 +66,7 @@ private:
   
   void ShowDefault( Wt::WContainerWidget* );
   void ShowSignIn( Wt::WContainerWidget* );
+  void ShowSignOut( Wt::WContainerWidget* );
   
   void Upload( Wt::WContainerWidget* );
   
