@@ -69,9 +69,11 @@ private:
   void ShowHome( Wt::WContainerWidget* );
   void ShowDefault( Wt::WContainerWidget* );
   void ShowSignIn( Wt::WContainerWidget* );
-  void ShowSignOut( Wt::WContainerWidget* );
   
   void Upload( Wt::WContainerWidget* );
+  
+  void DropTables( Wt::WContainerWidget* );
+  void CreateTables( Wt::WContainerWidget* );
   
   void ShowAddresses( Wt::WContainerWidget* pcw );
 

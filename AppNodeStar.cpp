@@ -56,13 +56,6 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   //useStyleSheet("css/nodestar.css");
   useStyleSheet("style/nodestar.css");
   
-  std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
-  setTitle( sTitle );
-  auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
-  pTitle->setStyleClass( "MainTitle" );
-  
-  root()->addWidget( pTitle );
-
   m_Session.setConnectionPool( m_pServer->GetConnectionPool() );
   
   m_Session.mapClass<DbRecOrganization>( "organization" );
@@ -99,6 +92,14 @@ void AppNodeStar::initialize() {
 }
 
 void AppNodeStar::finalize() {
+}
+
+void AppNodeStar::DropTables(Wt::WContainerWidget*) {
+  
+}
+
+void AppNodeStar::CreateTables(Wt::WContainerWidget*) {
+  
 }
 
 void AppNodeStar::HandleInternalPathChanged( const std::string& sPath ) {
@@ -159,7 +160,8 @@ void AppNodeStar::HandleAuthLoginChanged() {
     setInternalPath( "/home", false ); // a true on this will generate an exception
   }
 
-  ShowMainMenu( root() );
+  // ** submit as event, causes an error
+  //ShowMainMenu( root() );
 }
 
 void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
@@ -174,22 +176,23 @@ void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
   pcw->addWidget( m_pAuth->NewAuthWidget() );  // stateful show of: login, register, logged in
 }
 
-// may not be needed, not linked to anything at the moment
-void AppNodeStar::ShowSignOut( Wt::WContainerWidget* pcw ) {
-  pcw->addWidget( new Wt::WText( "Home Sign Out - " ) );
-  ShowMainMenu( pcw );
-  pcw->addWidget( m_pAuth->NewAuthWidget() );
-}
-
 void AppNodeStar::ShowHome( Wt::WContainerWidget* pcw ) {
 
+  std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
+  setTitle( sTitle );
+  auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
+  pTitle->setStyleClass( "MainTitle" );
+  
+  root()->addWidget( pTitle );
+
+  pcw->addWidget( new Wt::WText( "Home Main Menu" ) );
+
   AddLink( pcw, "admin", "/home", "Home" );
+  
 }
 
 void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   
-  pcw->addWidget( new Wt::WText( "Home Main Menu" ) );
-
   ShowHome( pcw );
   
   AddLink( pcw, "admin", "/show/addresses", "Address List" );
@@ -204,11 +207,6 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   
   if ( m_pAuth->LoggedIn() ) {
     
-    pcw->addWidget( new Wt::WText( "Logged In" ) );
-    
-    //AddLink( pcw, "admin", "/auth/signout", "Sign Out" );
-    //RegisterPath( "/auth/signout", boost::phoenix::bind( &AppNodeStar::ShowSignOut, this, args::arg1 ) );
-    
     // <a id="ov7qcp1" 
     //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
     //    class="Wt-rr"><span id="ov7qcp0">Populate Tables: MySQL sourced</span>
@@ -218,7 +216,7 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
     AddLink( pMenu, "admin", "/admin/tables/init", "Init Tables" );
     AddLink( pMenu, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
     // use the Upload class to do this one:
-    AddLink( pMenu, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
+    AddLink( pMenu, "admin", "/ad min/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
     // use the Upload class to do this one:
     AddLink( pMenu, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
     
@@ -249,5 +247,7 @@ void AppNodeStar::Upload( Wt::WContainerWidget* pcw ) {
 }
 
 void AppNodeStar::ShowAddresses( Wt::WContainerWidget* pcw ) {
+  ShowHome( pcw );
+  pcw->addWidget( new Wt::WText( "Addresses:" ) );
   auto p( new ::ShowAddresses( pcw, m_Session ) );
 }

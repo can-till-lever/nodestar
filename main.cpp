@@ -97,6 +97,7 @@ struct InsertNetwork {
     }
     iter->second.push_back(network);
   }
+  
   void operator()( const std::string& sIdOrganization, const std::string& sNetwork, const std::string& sName, const std::string& sComment, const std::string& sSource ) {
     // collect addresses, sort masks shortest to longest, then insert as hierarchy into database
     //Network network( sIdOrganization, sNetwork, sName, sComment );  // need an org insertion capability to do this
@@ -117,6 +118,7 @@ struct InsertNetwork {
     }
     iter->second.push_back(network);
   }
+  
   void Finish( void ) {
     // from short mask to longer mask
     for ( mapNetworks_iter miter = mapNetworks.begin(); mapNetworks.end() != miter; ++miter ) {
@@ -263,6 +265,7 @@ void InitializeTables( dbo::FixedSqlConnectionPool& pool ) {
     UserAuth::MapClasses( session );
 
     // need to split this out and conditionally drop tables, only if they exist.
+    // attach this to a url?  but application hasn't been started yet,
     session.dropTables();  // for testing
     
     session.createTables();
