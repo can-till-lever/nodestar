@@ -11,13 +11,16 @@
 
 #include "Auth.h"
 
+// 2016/08/28 can Auth and UserAuth be folded together?
+
 Auth::Auth( dbo::FixedSqlConnectionPool& pool ) {
     
   std::cout << "new m_pUserAuth" << std::endl;
   m_pUserAuth.reset( new UserAuth( pool ) );
   
   // need to generalize this link with ** linkAuthEvent ** in UserAuth.h
-  m_pUserAuth->login().changed().connect( m_pUserAuth.get(), &UserAuth::authEvent );
+  //m_pUserAuth->login().changed().connect( m_pUserAuth.get(), &UserAuth::authEvent );
+ 
 
 }
 

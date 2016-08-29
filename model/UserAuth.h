@@ -29,7 +29,6 @@ public:
   virtual ~UserAuth();
   
   Wt::Auth::AbstractUserDatabase& Users();
-//  UserDatabase* Users();
   
   static void MapClasses( dbo::Session& session );  
   void InitializeTables( void );  // empty for now, but useful to pre-populate at some point
@@ -43,13 +42,13 @@ public:
   static const std::vector<const Wt::Auth::OAuthService *>& oAuth();
   
   // ** linkAuthEvent ** in Auth.ccp
-  void authEvent() {
-    if ( m_SignIn.loggedIn() )
-      Wt::log("notice") << "User " << m_SignIn.user().id()
-			<< " logged in.";
-    else
-      Wt::log("notice") << "User logged out.";
-  };
+  //void authEvent() {
+  //  if ( m_SignIn.loggedIn() )
+  //    Wt::log("notice") << "User " << m_SignIn.user().id()
+	//		<< " logged in.";
+  //  else
+  //    Wt::log("notice") << "User logged out.";
+  //};
   
 protected:
 private:

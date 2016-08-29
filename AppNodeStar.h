@@ -60,10 +60,13 @@ private:
   typedef std::map<const std::string, const slotInternalPathChanged_t> mapInternalPathChanged_t;
   mapInternalPathChanged_t m_mapInternalPathChanged;
   
+  Wt::Signals::connection connectionLoginChanged;
+  
   void AddLink( Wt::WContainerWidget*, const std::string& sClass, const std::string& sPath, const std::string& sAnchor );
 
   void ShowMainMenu( Wt::WContainerWidget* );
   
+  void ShowHome( Wt::WContainerWidget* );
   void ShowDefault( Wt::WContainerWidget* );
   void ShowSignIn( Wt::WContainerWidget* );
   void ShowSignOut( Wt::WContainerWidget* );
@@ -74,4 +77,6 @@ private:
 
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );
+  
+  void HandleAuthLoginChanged( void );
 };

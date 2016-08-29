@@ -79,8 +79,15 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   //auto pTest = new Wt::WText( "this is test", root() );
   //pTest->setStyleClass( "test" );
   
+  // make use of the authEvent to change state (show login, or show logout) via Auth.h)
   m_pAuth.reset( new Auth( m_pServer->GetConnectionPool() ) );
+  connectionLoginChanged = m_pAuth->RegisterLoginChanged( this, &AppNodeStar::HandleAuthLoginChanged );
   
+  namespace args = boost::phoenix::arg_names;
+  RegisterPath( "/home", boost::phoenix::bind( &AppNodeStar::ShowDefault, this, args::arg1 ) );
+  RegisterPath( "/show/addresses", boost::phoenix::bind( &AppNodeStar::ShowAddresses, this, args::arg1 ) );
+  RegisterPath( "/admin/tables/upload", boost::phoenix::bind( &AppNodeStar::Upload, this, args::arg1 ) );
+  RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::ShowSignIn, this, args::arg1 ) );
   
   ShowDefault( root() );
 }
@@ -99,12 +106,14 @@ void AppNodeStar::HandleInternalPathChanged( const std::string& sPath ) {
   std::cout << "HandleInternalPathChanged: " << sPath << std::endl;
   mapInternalPathChanged_t::const_iterator iter = m_mapInternalPathChanged.find( sPath );
   if ( m_mapInternalPathChanged.end() != iter ) {
+    root()->addWidget( new Wt::WText( "Path Changed - " ) );
     iter->second( root() );
   }
   else {
     // default home page, or error page, and register a default page
     ShowDefault( root() );
   }
+  std::cout << "end HandleInternalPathChanged" << std::endl;
 }
 
 void AppNodeStar::HandleInternalPathInvalid( const std::string& s ) {
@@ -113,13 +122,15 @@ void AppNodeStar::HandleInternalPathInvalid( const std::string& s ) {
   
 void AppNodeStar::RegisterPath( const std::string& sPath, const slotInternalPathChanged_t& slot ) {
   mapInternalPathChanged_t::const_iterator iter = m_mapInternalPathChanged.find( sPath );
-  if ( m_mapInternalPathChanged.end() != iter ) std::runtime_error( "path exists" );
+  if ( m_mapInternalPathChanged.end() != iter ) 
+    std::runtime_error( "path exists" );
   m_mapInternalPathChanged.insert( mapInternalPathChanged_t::value_type( sPath, slot ) );
 }
 
 void AppNodeStar::UnRegisterPath( const std::string& sPath ) {
   mapInternalPathChanged_t::const_iterator iter = m_mapInternalPathChanged.find( sPath );
-  if ( m_mapInternalPathChanged.end() == iter ) std::runtime_error( "path not found" );
+  if ( m_mapInternalPathChanged.end() == iter ) 
+    std::runtime_error( "path not found" );
   m_mapInternalPathChanged.erase( iter );
 }
 
@@ -130,12 +141,34 @@ void AppNodeStar::AddLink( Wt::WContainerWidget* pcw, const std::string& sClass,
   Wt::WAnchor* pAnchor = new Wt::WAnchor( link, sAnchor, pContainer );
 }
 
+void AppNodeStar::HandleAuthLoginChanged() {
+  
+  root()->clear();
+  root()->addWidget( new Wt::WText( "Login Changed - " ) );
+
+  if ( m_pAuth->LoggedIn() ) {
+    Wt::log("notice") << "AppNodeStar User " /* << m_SignIn.user().id() */ << " logged in.";
+  }
+  else {
+    Wt::log("notice") << "AppNodeStar User logged out.";
+  }
+  
+  if ( "/home" == internalPath() ) {
+  }
+  else {
+    setInternalPath( "/home", false ); // a true on this will generate an exception
+  }
+
+  ShowMainMenu( root() );
+}
+
 void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
   // upon signin, this widget still shows, so need to detect sign in somehow, and change state
   //  and show that widget
   // and a bunch of sessions have been created, then destroyed once logged in and the new menu supplied
-  pcw->addWidget( new Wt::WText( "Show Sign In" ) );
-  ShowMainMenu( pcw );
+  pcw->addWidget( new Wt::WText( "Show Sign In - " ) );
+  ShowHome( pcw );
+  //ShowMainMenu( pcw );
   // need to register this, or put in menu somewhere, so can call on demand
   // this needs to be added to the global page, and the page decorated depending upon where we are
   pcw->addWidget( m_pAuth->NewAuthWidget() );  // stateful show of: login, register, logged in
@@ -143,34 +176,25 @@ void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
 
 // may not be needed, not linked to anything at the moment
 void AppNodeStar::ShowSignOut( Wt::WContainerWidget* pcw ) {
-  pcw->addWidget( new Wt::WText( "Home Sign Out" ) );
+  pcw->addWidget( new Wt::WText( "Home Sign Out - " ) );
   ShowMainMenu( pcw );
   pcw->addWidget( m_pAuth->NewAuthWidget() );
 }
 
-void AppNodeStar::ShowDefault( Wt::WContainerWidget* pcw ) {
-  pcw->addWidget( new Wt::WText( "Show Default" ) );
-  ShowMainMenu( pcw );
-}
+void AppNodeStar::ShowHome( Wt::WContainerWidget* pcw ) {
 
-void AppNodeStar::ShowAddresses( Wt::WContainerWidget* pcw ) {
-  auto p( new ::ShowAddresses( pcw, m_Session ) );
+  AddLink( pcw, "admin", "/home", "Home" );
 }
 
 void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   
-  namespace args = boost::phoenix::arg_names;
-  
   pcw->addWidget( new Wt::WText( "Home Main Menu" ) );
-  
-  AddLink( pcw, "admin", "/home", "Home" );
-  RegisterPath( "/home", boost::phoenix::bind( &AppNodeStar::ShowDefault, this, args::arg1 ) );
+
+  ShowHome( pcw );
   
   AddLink( pcw, "admin", "/show/addresses", "Address List" );
-  RegisterPath( "/show/addresses", boost::phoenix::bind( &AppNodeStar::ShowAddresses, this, args::arg1 ) );
   
   AddLink( pcw, "admin", "/admin/tables/upload", "Upload" );
-  RegisterPath( "/admin/tables/upload", boost::phoenix::bind( &AppNodeStar::Upload, this, args::arg1 ) );
   
   // still need to show the widget, and there needs to be a click event so when 
   //  logged in we can refresh
@@ -197,6 +221,8 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
     AddLink( pMenu, "admin", "/admin/tables/populate/mysql",  "Populate Tables: MySQL sourced" );
     // use the Upload class to do this one:
     AddLink( pMenu, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
+    
+    pcw->addWidget( m_pAuth->NewAuthWidget() );
 
   }
   else {
@@ -204,7 +230,6 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
     // if not logged in, show link to sign in
     // if logged in, put log out button.
     AddLink( pcw, "admin", "/auth/signin", "Sign In" );
-    RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::ShowSignIn, this, args::arg1 ) );
   }
   
   // sample button code, but now implemented as a link
@@ -214,7 +239,15 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   
 }
 
+void AppNodeStar::ShowDefault( Wt::WContainerWidget* pcw ) {
+  pcw->addWidget( new Wt::WText( "Show Default -  " ) );
+  ShowMainMenu( pcw );
+}
+
 void AppNodeStar::Upload( Wt::WContainerWidget* pcw ) {
-  ::Upload* upload( new ::Upload( pcw ) );
-  
+  ::Upload* upload( new ::Upload( pcw ) );  
+}
+
+void AppNodeStar::ShowAddresses( Wt::WContainerWidget* pcw ) {
+  auto p( new ::ShowAddresses( pcw, m_Session ) );
 }
