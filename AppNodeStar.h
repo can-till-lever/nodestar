@@ -81,4 +81,5 @@ private:
   void HandleInternalPathInvalid( const std::string& );
   
   void HandleAuthLoginChanged( void );
+  void HandleAuthLoginChangedStep2( void );
 };

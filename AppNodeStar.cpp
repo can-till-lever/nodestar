@@ -83,6 +83,7 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::ShowSignIn, this, args::arg1 ) );
   
   ShowDefault( root() );
+
 }
 
 AppNodeStar::~AppNodeStar() {
@@ -144,8 +145,8 @@ void AppNodeStar::AddLink( Wt::WContainerWidget* pcw, const std::string& sClass,
 
 void AppNodeStar::HandleAuthLoginChanged() {
   
-  root()->clear();
-  root()->addWidget( new Wt::WText( "Login Changed - " ) );
+  //root()->clear();
+  //root()->addWidget( new Wt::WText( "Login Changed - " ) );
 
   if ( m_pAuth->LoggedIn() ) {
     Wt::log("notice") << "AppNodeStar User " /* << m_SignIn.user().id() */ << " logged in.";
@@ -154,14 +155,17 @@ void AppNodeStar::HandleAuthLoginChanged() {
     Wt::log("notice") << "AppNodeStar User logged out.";
   }
   
-  if ( "/home" == internalPath() ) {
-  }
-  else {
-    setInternalPath( "/home", false ); // a true on this will generate an exception
-  }
-
   // ** submit as event, causes an error
   //ShowMainMenu( root() );
+  m_pServer->post( sessionId(), boost::phoenix::bind( &AppNodeStar::HandleAuthLoginChangedStep2, this ) );
+}
+
+void AppNodeStar::HandleAuthLoginChangedStep2( void ) {
+  if ( "/home" != internalPath() ) {
+    setInternalPath( "/home", false ); // a true on this will generate an exception
+  }
+  root()->clear();
+  ShowMainMenu( root() );
 }
 
 void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
