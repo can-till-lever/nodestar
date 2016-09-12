@@ -74,15 +74,28 @@ AppNodeStar::AppNodeStar( const Wt::WEnvironment& env ): Wt::WApplication( env )
   
   // make use of the authEvent to change state (show login, or show logout) via Auth.h)
   m_pAuth.reset( new Auth( m_pServer->GetConnectionPool() ) );
-  connectionLoginChanged = m_pAuth->RegisterLoginChanged( this, &AppNodeStar::HandleAuthLoginChanged );
+  m_connectionLoginChanged = m_pAuth->RegisterLoginChanged( this, &AppNodeStar::HandleAuthLoginChangedStep1 );
   
   namespace args = boost::phoenix::arg_names;
-  RegisterPath( "/home", boost::phoenix::bind( &AppNodeStar::ShowDefault, this, args::arg1 ) );
-  RegisterPath( "/show/addresses", boost::phoenix::bind( &AppNodeStar::ShowAddresses, this, args::arg1 ) );
-  RegisterPath( "/admin/tables/upload", boost::phoenix::bind( &AppNodeStar::Upload, this, args::arg1 ) );
-  RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::ShowSignIn, this, args::arg1 ) );
+
+  RegisterPath( "/", boost::phoenix::bind( &AppNodeStar::HomeRoot, this, args::arg1 ) );
+  RegisterPath( "/home", boost::phoenix::bind( &AppNodeStar::Home, this, args::arg1 ) );
+
+  RegisterPath( "/auth/signin", boost::phoenix::bind( &AppNodeStar::AuthSignIn, this, args::arg1 ) );
+  RegisterPath( "/auth/expired", boost::phoenix::bind( &AppNodeStar::AuthExpired, this, args::arg1 ) );
+  RegisterPath( "/auth/signout", boost::phoenix::bind( &AppNodeStar::AuthSignOut, this, args::arg1 ) );
+  RegisterPath( "/goodbye", boost::phoenix::bind( &AppNodeStar::GoodBye, this, args::arg1 ) );
+
+  RegisterPath( "/member/home", boost::phoenix::bind( &AppNodeStar::MemberHome, this, args::arg1 ) );
+  RegisterPath( "/member/show/addresses", boost::phoenix::bind( &AppNodeStar::MemberShowAddresses, this, args::arg1 ) );
+  RegisterPath( "/member/upload/tables", boost::phoenix::bind( &AppNodeStar::MemberUploadTables, this, args::arg1 ) );
   
-  ShowDefault( root() );
+  struct callback {
+    void operator()( Wt::WContainerWidget* pcw ) {
+      
+    }
+  };
+  TemplatePage( root(), callback() );
 
 }
 
@@ -96,24 +109,23 @@ void AppNodeStar::finalize() {
 }
 
 void AppNodeStar::DropTables(Wt::WContainerWidget*) {
-  
 }
 
 void AppNodeStar::CreateTables(Wt::WContainerWidget*) {
-  
 }
 
 void AppNodeStar::HandleInternalPathChanged( const std::string& sPath ) {
   root()->clear();
-  std::cout << "HandleInternalPathChanged: " << sPath << std::endl;
+  std::cout << "HandleInternalPathChanged: " << sPath << " ";
   mapInternalPathChanged_t::const_iterator iter = m_mapInternalPathChanged.find( sPath );
   if ( m_mapInternalPathChanged.end() != iter ) {
-    root()->addWidget( new Wt::WText( "Path Changed - " ) );
+    std::cout << "iter" << std::endl;
     iter->second( root() );
   }
   else {
     // default home page, or error page, and register a default page
-    ShowDefault( root() );
+    std::cout << "root" << std::endl;
+    Home( root() );
   }
   std::cout << "end HandleInternalPathChanged" << std::endl;
 }
@@ -143,65 +155,111 @@ void AppNodeStar::AddLink( Wt::WContainerWidget* pcw, const std::string& sClass,
   Wt::WAnchor* pAnchor = new Wt::WAnchor( link, sAnchor, pContainer );
 }
 
-void AppNodeStar::HandleAuthLoginChanged() {
-  
-  //root()->clear();
-  //root()->addWidget( new Wt::WText( "Login Changed - " ) );
-
-  if ( m_pAuth->LoggedIn() ) {
-    Wt::log("notice") << "AppNodeStar User " /* << m_SignIn.user().id() */ << " logged in.";
-  }
-  else {
-    Wt::log("notice") << "AppNodeStar User logged out.";
-  }
-  
-  // ** submit as event, causes an error
-  //ShowMainMenu( root() );
-  m_pServer->post( sessionId(), boost::phoenix::bind( &AppNodeStar::HandleAuthLoginChangedStep2, this ) );
+void AppNodeStar::HandleAuthLoginChangedStep1() {
+  std::cout << "auth step1" << std::endl;
+  // ** submit as event, otherwise gui changes will cause an error
+  //m_pServer->post( sessionId(), boost::phoenix::bind( &AppNodeStar::HandleAuthLoginChangedStep2, this ) );
+  HandleAuthLoginChangedStep2();
 }
 
 void AppNodeStar::HandleAuthLoginChangedStep2( void ) {
-  if ( "/home" != internalPath() ) {
-    setInternalPath( "/home", false ); // a true on this will generate an exception
+  // 2016/09/04:   goto the logged out page (or special leaving page), or to the /member/home page)
+  //root()->clear();
+  //root()->addWidget( new Wt::WText( "Login Changed - " ) );
+  std::cout << "auth step2" << std::endl;
+  if ( m_pAuth->LoggedIn() ) {
+    Wt::log("notice") << "AppNodeStar User " /* << m_SignIn.user().id() */ << " logged in.";
+    setInternalPath( "/member/home", false );
+    //HandleInternalPathChanged( internalPath() );
+    //redirect( "/member/home" );
+    //this->refresh();
   }
-  root()->clear();
-  ShowMainMenu( root() );
+  else {
+    Wt::log("notice") << "AppNodeStar User logged out.";
+    setInternalPath( "/goodbye", false );
+    //HandleInternalPathChanged( internalPath() );
+    //redirect( "/goodbye" );
+    //this->refresh();
+  }
+  
+  //root()->clear();
+  HandleInternalPathChanged( internalPath() );
+//  ShowMainMenu( root() );
 }
 
-void AppNodeStar::ShowSignIn( Wt::WContainerWidget* pcw ) {
-  // upon signin, this widget still shows, so need to detect sign in somehow, and change state
-  //  and show that widget
-  // and a bunch of sessions have been created, then destroyed once logged in and the new menu supplied
-  pcw->addWidget( new Wt::WText( "Show Sign In - " ) );
-  ShowHome( pcw );
-  //ShowMainMenu( pcw );
-  // need to register this, or put in menu somewhere, so can call on demand
-  // this needs to be added to the global page, and the page decorated depending upon where we are
-  pcw->addWidget( m_pAuth->NewAuthWidget() );  // stateful show of: login, register, logged in
+void AppNodeStar::MemberHome( Wt::WContainerWidget* pcw ) {
+  struct callback {
+    void operator()( Wt::WContainerWidget* pcw ) {
+      auto p( new Wt::WText( "Member Status and Operations" ) );
+      p->setStyleClass( "MemberHome" );
+      pcw->addWidget( p );      
+    }
+  };
+  std::cout << "memberHome" << std::endl;
+  TemplatePageMember( pcw, callback() );
 }
 
-void AppNodeStar::ShowHome( Wt::WContainerWidget* pcw ) {
-
-  std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
-  setTitle( sTitle );
-  auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
-  pTitle->setStyleClass( "MainTitle" );
+void AppNodeStar::AuthSignIn( Wt::WContainerWidget* pcw ) {
+  struct callback {  // show widget only if not logged in
+    void operator()( Wt::WContainerWidget* pcw ) {
+      if ( 0 != m_p ) pcw->addWidget( m_p ); 
+    }
+    callback( Wt::WWidget* p ): m_p( p ) {}
+    Wt::WWidget* m_p;
+  };
   
-  root()->addWidget( pTitle );
+  TemplatePage( pcw, callback( m_pAuth->LoggedIn() ? 0 : m_pAuth->NewAuthWidget() ) );
+}
 
-  pcw->addWidget( new Wt::WText( "Home Main Menu" ) );
-
-  AddLink( pcw, "admin", "/home", "Home" );
+void AppNodeStar::AuthSignOut( Wt::WContainerWidget* pcw ) {
+  struct callback {  // show widget only if not logged in
+    void operator()( Wt::WContainerWidget* pcw ) {
+      if ( 0 != m_p ) pcw->addWidget( m_p ); 
+    }
+    callback( Wt::WWidget* p ): m_p( p ) {}
+    Wt::WWidget* m_p;
+  };
   
+  if ( m_pAuth->LoggedIn() ) {
+    m_pAuth->LogOut();
+  }
+  
+  TemplatePage( pcw, callback( 0 ) );
+}
+
+void AppNodeStar::AuthExpired( Wt::WContainerWidget* pcw ) {
+  struct callback {
+    void operator()( Wt::WContainerWidget* pcw ) {
+      auto p( new Wt::WText( "Session Has Expired:" ) );
+      p->setStyleClass( "AuthExpired" );
+      pcw->addWidget( p );
+    }
+  };
+  TemplatePage( pcw, callback() );
+}
+
+void AppNodeStar::HomeRoot( Wt::WContainerWidget* pcw ) {
+  std::cout << "root home" << std::endl;
+  namespace args = boost::phoenix::arg_names;
+
+  TemplatePage( pcw, boost::phoenix::bind( &AppNodeStar::ShowMainMenu, this, args::arg1 ) );
+}
+
+void AppNodeStar::Home( Wt::WContainerWidget* pcw ) {
+  std::cout << "main home" << std::endl;
+  namespace args = boost::phoenix::arg_names;
+
+  TemplatePage( pcw, boost::phoenix::bind( &AppNodeStar::ShowMainMenu, this, args::arg1 ) );
+}
+
+void AppNodeStar::GoodBye( Wt::WContainerWidget* pcw ) {
+  std::cout << "goodbye" << std::endl;
+  namespace args = boost::phoenix::arg_names;
+
+  TemplatePage( pcw, boost::phoenix::bind( &AppNodeStar::ShowMainMenu, this, args::arg1 ) );
 }
 
 void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
-  
-  ShowHome( pcw );
-  
-  AddLink( pcw, "admin", "/show/addresses", "Address List" );
-  
-  AddLink( pcw, "admin", "/admin/tables/upload", "Upload" );
   
   // still need to show the widget, and there needs to be a click event so when 
   //  logged in we can refresh
@@ -210,12 +268,16 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   //   because nothing else happens on the page
   
   if ( m_pAuth->LoggedIn() ) {
+
+    AddLink( pcw, "member", "/show/addresses", "Address List" );
+    AddLink( pcw, "member", "/admin/tables/upload", "Upload" );
     
     // <a id="ov7qcp1" 
     //    href="admin/tables/populate/mysql?wtd=jLpA57e4vgIIoYxI" 
     //    class="Wt-rr"><span id="ov7qcp0">Populate Tables: MySQL sourced</span>
     //    </a>
     auto pMenu = new Wt::WContainerWidget( pcw );
+    // test against database, and figure out which can be shown, particularily the tables/init one
     pMenu->setList(true); // ==> sub WContainerWidget added as <li> elements
     AddLink( pMenu, "admin", "/admin/tables/init", "Init Tables" );
     AddLink( pMenu, "admin", "/admin/tables/populate/basics", "Populate Tables: Basics" );
@@ -224,14 +286,9 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
     // use the Upload class to do this one:
     AddLink( pMenu, "admin", "/admin/tables/populate/smcxml", "Populate Tables: SMC XML sourced" );
     
-    pcw->addWidget( m_pAuth->NewAuthWidget() );
-
   }
   else {
-    pcw->addWidget( new Wt::WText( "Not Logged In" ) );
-    // if not logged in, show link to sign in
-    // if logged in, put log out button.
-    AddLink( pcw, "admin", "/auth/signin", "Sign In" );
+    
   }
   
   // sample button code, but now implemented as a link
@@ -241,17 +298,74 @@ void AppNodeStar::ShowMainMenu( Wt::WContainerWidget* pcw ) {
   
 }
 
-void AppNodeStar::ShowDefault( Wt::WContainerWidget* pcw ) {
-  pcw->addWidget( new Wt::WText( "Show Default -  " ) );
-  ShowMainMenu( pcw );
-}
-
-void AppNodeStar::Upload( Wt::WContainerWidget* pcw ) {
+void AppNodeStar::MemberUploadTables( Wt::WContainerWidget* pcw ) {
   ::Upload* upload( new ::Upload( pcw ) );  
 }
 
-void AppNodeStar::ShowAddresses( Wt::WContainerWidget* pcw ) {
-  ShowHome( pcw );
-  pcw->addWidget( new Wt::WText( "Addresses:" ) );
-  auto p( new ::ShowAddresses( pcw, m_Session ) );
+void AppNodeStar::MemberShowAddresses( Wt::WContainerWidget* pcw ) {
+  struct callback {
+    void operator()( Wt::WContainerWidget* pcw ) {
+      auto pAddresses( new Wt::WText( "Addresses:" ) );
+      pAddresses->setStyleClass( "MemberShowAddresses" );
+      pcw->addWidget( pAddresses );
+
+      auto p( new ::ShowAddresses( pcw, m_session ) );
+    }
+    callback( dbo::Session& session ): m_session( session ) {}
+    dbo::Session& m_session;
+  };
+  TemplatePageMember( pcw, callback( m_Session ) );
+}
+
+void AppNodeStar::TemplatePage(Wt::WContainerWidget* pcw, FTemplate f) {
+  
+  std::string sTitle( "NodeStar: Network Infrastructure Data Management" );
+  setTitle( sTitle );
+  auto pTitle( new Wt::WText( "NodeStar: Network Infrastructure Data Management" ) );
+  pTitle->setStyleClass( "MainTitle" );
+  
+  pcw->addWidget( pTitle );
+  
+    // should show up to the right of the title
+  if ( this->internalPathMatches( "/auth/signin" ) ) {
+    // don't show sign in status
+  }
+  else {
+    if ( m_pAuth->LoggedIn() ) {
+      //pcw->addWidget( m_pAuth->NewAuthWidget() );
+      AddLink( pcw, "member", "/auth/signout", "Sign Out" );
+      AddLink( pcw, "member", "/member/home", "Home" );
+    }
+    else {
+      AddLink( pcw, "admin", "/auth/signin", "Sign In" );
+      AddLink( pcw, "default", "/home", "Home" );
+    }
+    
+  }
+
+  
+
+  f( pcw );
+}
+
+void AppNodeStar::TemplatePageMember(Wt::WContainerWidget* pcw, FTemplate f) {
+  struct callback {
+    void operator()( Wt::WContainerWidget* pcw ) {
+      std::cout << "callback ";
+      auto pMemberTop( new Wt::WText( "member top" ) );
+      pMemberTop->setStyleClass( "MemmberTop" );
+      pcw->addWidget( pMemberTop );
+      
+      m_f( pcw );
+
+      auto pMemberBottom( new Wt::WText( "member bottom" ) );
+      pMemberBottom->setStyleClass( "MemberBottom" );
+      pcw->addWidget( pMemberBottom );
+    }
+    callback( FTemplate f ): m_f( f ) {}
+    FTemplate m_f;
+  };
+  std::cout << "templatepagemember ";
+  TemplatePage( pcw, callback( f ) );
+  std::cout << "done" << std::endl;
 }

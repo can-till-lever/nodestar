@@ -20,6 +20,7 @@ public:
   virtual ~Auth();
   Wt::Auth::AuthWidget* NewAuthWidget( void );
   bool LoggedIn( void ) const { return m_pUserAuth->login().loggedIn(); };
+  void LogOut( void );
   typedef Wt::Signals::connection (changed)(void);
   template<class T, class C>
   Wt::Signals::connection RegisterLoginChanged( T* target, C c ) {

@@ -33,7 +33,7 @@ namespace { // anonymous
   Wt::Auth::AuthService myAuthService;
   Wt::Auth::PasswordService myPasswordService(myAuthService);
   MyOAuth myOAuthServices;
-
+  
 } // namespace anonymous
 
 UserAuth::UserAuth( dbo::FixedSqlConnectionPool& pool ) {

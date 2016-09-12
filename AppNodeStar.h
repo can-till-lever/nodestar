@@ -16,6 +16,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
+#include <boost/function.hpp>
 
 #include <Wt/Dbo/ptr>
 #include <Wt/WApplication>
@@ -47,12 +48,10 @@ public:
 protected:
 private:
   
-  // old style
-  //typedef boost::shared_ptr<UserAuth> pUserAuth_t;
-  //pUserAuth_t m_pUserAuth;  
-  // new style
   typedef boost::shared_ptr<Auth> pAuth_t;
   pAuth_t m_pAuth;
+  
+  typedef boost::function<void(Wt::WContainerWidget*)> FTemplate;
   
   Server* m_pServer; // object managed by wt
   dbo::Session m_Session;
@@ -60,26 +59,32 @@ private:
   typedef std::map<const std::string, const slotInternalPathChanged_t> mapInternalPathChanged_t;
   mapInternalPathChanged_t m_mapInternalPathChanged;
   
-  Wt::Signals::connection connectionLoginChanged;
+  Wt::Signals::connection m_connectionLoginChanged;
   
   void AddLink( Wt::WContainerWidget*, const std::string& sClass, const std::string& sPath, const std::string& sAnchor );
 
   void ShowMainMenu( Wt::WContainerWidget* );
   
-  void ShowHome( Wt::WContainerWidget* );
-  void ShowDefault( Wt::WContainerWidget* );
-  void ShowSignIn( Wt::WContainerWidget* );
+  void HomeRoot( Wt::WContainerWidget* );
+  void Home( Wt::WContainerWidget* );
+  void AuthSignIn( Wt::WContainerWidget* );
+  void AuthExpired( Wt::WContainerWidget* );
+  void AuthSignOut( Wt::WContainerWidget* );
+  void GoodBye( Wt::WContainerWidget* );
   
-  void Upload( Wt::WContainerWidget* );
+  void MemberHome( Wt::WContainerWidget* );
+  void MemberShowAddresses( Wt::WContainerWidget* pcw );
+  void MemberUploadTables( Wt::WContainerWidget* );
   
   void DropTables( Wt::WContainerWidget* );
   void CreateTables( Wt::WContainerWidget* );
   
-  void ShowAddresses( Wt::WContainerWidget* pcw );
-
   void HandleInternalPathChanged( const std::string& );
   void HandleInternalPathInvalid( const std::string& );
   
-  void HandleAuthLoginChanged( void );
+  void HandleAuthLoginChangedStep1( void );
   void HandleAuthLoginChangedStep2( void );
+  
+  void TemplatePage( Wt::WContainerWidget*, FTemplate );
+  void TemplatePageMember( Wt::WContainerWidget*, FTemplate );
 };
